@@ -3,10 +3,7 @@ package com.altissia.clickandrun.domain.spreadsheet;
 
 import com.altissia.clickandrun.domain.spreadsheet.validation.SheetValidation;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -14,6 +11,8 @@ import java.util.stream.Collectors;
  * Contains the workbook definition and the actual data of the workbook.
  */
 public class Workbook {
+
+    protected boolean ignoringSuperfluousHeaders;
 
     protected Map<String, Sheet<? extends Row>> sheets;
 
@@ -29,6 +28,10 @@ public class Workbook {
 	public List<? extends Row> getSheetRows(String sheetName) {
         return this.sheets.get(sheetName).getRows();
 	}
+
+	public Collection<Sheet<? extends Row>> getSheets() {
+        return sheets.values();
+    }
 
 	public Map<String, SheetValidation> getValidations() {
         return this.sheets.entrySet().stream()
@@ -53,6 +56,10 @@ public class Workbook {
 	public boolean hasWarning() {
         return this.sheets.values().stream().anyMatch(Sheet::hasWarning);
 	}
+
+    public boolean isIgnoringSuperfluousHeaders() {
+        return ignoringSuperfluousHeaders;
+    }
 
     @Override
     public boolean equals(Object o) {
