@@ -46,42 +46,7 @@ public class WorkbookExtendedService {
 
         readWorkbook(file, workbook);
 
-        // Get validator
-        ValidatorFactory beanValidatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator beanValidator = beanValidatorFactory.getValidator();
-
-        log.debug("Validating each sheet's each row with bean validator");
-        workbook.getSheets().forEach(sheet -> {
-            if (!sheet.isValid()) {
-                log.error("Headers are not valid for sheet {}, skipping row validation", sheet.getName());
-                return;
-            }
-
-            log.debug("Validating {} rows of sheet: {}", sheet.getRows().size(), sheet.getName());
-
-            long beanValidationErrors = sheet.getRows().stream()
-                .mapToLong(row -> {
-                    List<FieldValidation> rowViolations = beanValidator.validate(row)
-                        .stream()
-                        .map(FieldValidation::new)
-                        .collect(Collectors.toList());
-
-                    if (!rowViolations.isEmpty()) {
-                        log.debug("{} error found during row {} validation", rowViolations.size(), row.getRow());
-                        sheet.addRowError(new RowValidation(row.getRow(), rowViolations));
-                    }
-
-                    return rowViolations.size();
-                })
-                .sum();
-
-            if (beanValidationErrors > 0) {
-                log.debug("{} issues found during bean-validation", beanValidationErrors);
-            } else {
-                log.debug("No issues found during bean-validation");
-            }
-
-        });
+        validateRows(workbook);
 
         return workbook;
     }
@@ -164,6 +129,47 @@ public class WorkbookExtendedService {
         } catch (IOException e) {
             log.error("Unable to close workbook", e);
         }
+
+        return workbook;
+    }
+
+    private Workbook validateRows(Workbook workbook) {
+        // Get validator
+        ValidatorFactory beanValidatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator beanValidator = beanValidatorFactory.getValidator();
+
+        log.debug("Validating each sheet's each row with bean validator");
+        workbook.getSheets().forEach(sheet -> {
+            if (!sheet.isValid()) {
+                log.error("Headers are not valid for sheet {}, skipping row validation", sheet.getName());
+                return;
+            }
+
+            log.debug("Validating {} rows of sheet: {}", sheet.getRows().size(), sheet.getName());
+
+            long beanValidationErrors = sheet.getRows().stream()
+                .mapToLong(row -> {
+                    List<FieldValidation> rowViolations = beanValidator.validate(row)
+                        .stream()
+                        .map(FieldValidation::new)
+                        .collect(Collectors.toList());
+
+                    if (!rowViolations.isEmpty()) {
+                        log.debug("{} error found during row {} validation", rowViolations.size(), row.getRow());
+                        sheet.addRowError(new RowValidation(row.getRow(), rowViolations));
+                    }
+
+                    return rowViolations.size();
+                })
+                .sum();
+
+            if (beanValidationErrors > 0) {
+                log.debug("{} issues found during bean-validation", beanValidationErrors);
+            } else {
+                log.debug("No issues found during bean-validation");
+            }
+
+        });
 
         return workbook;
     }
