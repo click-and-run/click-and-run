@@ -31,7 +31,7 @@ public abstract class Sheet<T extends Row> {
     /**
      * The rows
      */
-    private List<? extends Row> rows;
+    private List<T> rows;
 
 
     /**
@@ -54,12 +54,12 @@ public abstract class Sheet<T extends Row> {
         return model;
     }
 
-    public List<? extends Row> getRows() {
+    public List<T> getRows() {
         return rows;
     }
 
     public void setRows(List<? extends Row> rows) {
-        this.rows = rows;
+        this.rows = (List<T>) rows;
     }
 
     public SheetValidation getValidity() {

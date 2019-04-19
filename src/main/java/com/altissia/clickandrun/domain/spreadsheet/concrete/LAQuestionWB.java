@@ -11,7 +11,7 @@ public class LAQuestionWB extends Workbook {
         this.sheets.put(SHEET_QUESTIONS, new QuestionsSheet());
     }
 
-    private class QuestionsSheet extends Sheet {
+    public class QuestionsSheet extends Sheet<LAQuestionRow> {
         QuestionsSheet() {
             super(SHEET_QUESTIONS, LAQuestionRow.class);
         }

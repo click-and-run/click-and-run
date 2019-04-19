@@ -2,9 +2,9 @@ package com.altissia.clickandrun.service.extended;
 
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
-import com.altissia.clickandrun.domain.spreadsheet.concrete.LAQuestionRow;
 import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
+import com.altissia.clickandrun.service.extended.validator.SheetValidator;
 import com.google.common.collect.Sets;
 import com.poiji.bind.Poiji;
 import com.poiji.exception.PoijiExcelType;
@@ -34,8 +34,11 @@ public class WorkbookExtendedService {
 
     private static final Logger log = LoggerFactory.getLogger(WorkbookExtendedService.class);
 
-    public WorkbookExtendedService() {
+    private final List<SheetValidator> sheetValidators;
 
+    public WorkbookExtendedService(List<SheetValidator> sheetValidators) {
+
+        this.sheetValidators = sheetValidators;
     }
 
     public Workbook validateWorkbook(MultipartFile file, Workbook workbook) {
@@ -47,6 +50,8 @@ public class WorkbookExtendedService {
         readWorkbook(file, workbook);
 
         validateRows(workbook);
+
+        validateSheets(workbook);
 
         return workbook;
     }
@@ -169,6 +174,42 @@ public class WorkbookExtendedService {
                 log.debug("No issues found during bean-validation");
             }
 
+        });
+
+        return workbook;
+    }
+
+    private Workbook validateSheets(Workbook workbook) {
+        workbook.getSheets().forEach(sheet -> {
+            // Post validation of each rows
+            if (log.isTraceEnabled()) {
+                log.trace("Applying suitable validator out of:");
+                this.sheetValidators.forEach(v -> log.trace(" * {}", v.getClass().getSimpleName()));
+            }
+
+            long postValidationIssues = this.sheetValidators.stream()
+                .filter(validator -> validator.isApplicableTo(sheet))
+                .mapToLong(postValidator -> {
+
+                    log.debug("Validating file using {}", postValidator.getClass().getSimpleName());
+
+                    long issues = postValidator.validate(sheet);
+
+                    if (issues > 0) {
+                        log.debug("{} error found during post-validation using {}", issues, postValidator.getClass().getSimpleName());
+                    } else {
+                        log.debug("No error found during post-validation using {}", postValidator.getClass().getSimpleName());
+                    }
+
+                    return issues;
+                })
+                .sum();
+
+            if (postValidationIssues > 0) {
+                log.debug("{} issues found during post-validation", postValidationIssues);
+            } else {
+                log.debug("No issues found during post-validation");
+            }
         });
 
         return workbook;
