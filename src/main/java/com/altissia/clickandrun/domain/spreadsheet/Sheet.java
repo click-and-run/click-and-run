@@ -31,7 +31,7 @@ public abstract class Sheet<T extends Row> {
     /**
      * The rows
      */
-    private List<T> rows;
+    private List<? extends Row> rows;
 
 
     /**
@@ -54,11 +54,11 @@ public abstract class Sheet<T extends Row> {
         return model;
     }
 
-    public List<T> getRows() {
+    public List<? extends Row> getRows() {
         return rows;
     }
 
-    public void setRows(List<T> rows) {
+    public void setRows(List<? extends Row> rows) {
         this.rows = rows;
     }
 
@@ -75,7 +75,7 @@ public abstract class Sheet<T extends Row> {
         List<String> headers = new ArrayList<>();
 
         // Retrieve all expected header fields
-        for (Field field : this.model.getDeclaredFields()) {
+        for (Field field : this.getModel().getDeclaredFields()) {
             ExcelCellName excelCellName = field.getAnnotation(ExcelCellName.class);
             if (excelCellName != null) {
                 headers.add(excelCellName.value());

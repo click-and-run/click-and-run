@@ -5,6 +5,7 @@ import com.poiji.annotation.ExcelCellName;
 import com.poiji.annotation.ExcelRow;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 public class LAQuestionRow extends Row {
@@ -13,8 +14,13 @@ public class LAQuestionRow extends Row {
     private int row;
 
     @ExcelCellName("name")
+    @Pattern(regexp = "\\w+")
     @NotNull
     private String name;
+
+    public String getName() {
+        return name;
+    }
 
     @Override
     public boolean equals(Object o) {

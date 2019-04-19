@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * An  workbook.
  * Contains the workbook definition and the actual data of the workbook.
  */
-public class Workbook {
+public abstract class Workbook {
 
     protected boolean ignoringSuperfluousHeaders;
 
