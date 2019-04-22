@@ -10,9 +10,9 @@ import com.altissia.clickandrun.service.extended.validator.common.Severity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DuplicateNameValidator extends DuplicateCellValidator<LAQuestionRow> {
+public class DuplicateUuidValidator extends DuplicateCellValidator<LAQuestionRow> {
 
-    public DuplicateNameValidator() {
+    public DuplicateUuidValidator() {
         super(Severity.ERROR);
     }
 
@@ -23,11 +23,11 @@ public class DuplicateNameValidator extends DuplicateCellValidator<LAQuestionRow
 
     @Override
     public String getCellValue(LAQuestionRow row) {
-        return row.getName();
+        return row.getUuid();
     }
 
     @Override
     public FieldValidation getFieldValidation(LAQuestionRow row) {
-        return new FieldValidation("name", row.getName(), "com.altissia.constraints.name.duplicate");
+        return new FieldValidation("name", row.getUuid(), "com.altissia.constraints.name.duplicate");
     }
 }

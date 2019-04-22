@@ -9,21 +9,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class TestFileProvider {
-	public MockMultipartFile getXLSX(String file) throws IOException {
-		File f;
-		try {
-			f = ResourceUtils.getFile(this.getClass().getResource(file));
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Unable to find file: {}" + file);
-		}
-		Path path = f.toPath();
+    public MockMultipartFile getXLSX(String file) throws IOException {
+        File f = ResourceUtils.getFile(this.getClass().getResource(file));
 
-		if (Files.notExists(path)) {
-			throw new IllegalArgumentException("Unable to find file: " + path.toString());
-		}
+        Path path = f.toPath();
 
-		String fileName = path.getFileName().toString();
-		byte[] content = Files.readAllBytes(path);
-		return new MockMultipartFile("file", fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", content);
-	}
+        if (Files.notExists(path)) {
+            throw new IllegalArgumentException("Unable to find file: " + path.toString());
+        }
+
+        String fileName = path.getFileName().toString();
+        byte[] content = Files.readAllBytes(path);
+        return new MockMultipartFile("file", fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", content);
+    }
 }

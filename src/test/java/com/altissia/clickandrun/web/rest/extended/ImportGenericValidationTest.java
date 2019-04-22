@@ -86,8 +86,8 @@ public class ImportGenericValidationTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value("com.altissia.constraints.header.empty"))
-            .andExpect(jsonPath("$.QUESTIONS.valid").value("false"));
+            .andExpect(jsonPath("$.questions.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
+            .andExpect(jsonPath("$.questions.valid").value("false"));
     }
 
     /**
@@ -99,7 +99,9 @@ public class ImportGenericValidationTest {
             .fileUpload(VALIDATION_ENDPOINT)
             .file(testFileProvider.getXLSX("/import/generic/error-empty-row.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.questions.valid").value("true"));
     }
 
     @Test
@@ -132,7 +134,7 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-header-missing.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
             .andExpect(jsonPath("$.QUESTIONS.valid").value("false"));
     }
 
