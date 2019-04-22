@@ -5,7 +5,7 @@ import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 
 public class LAQuestionWB extends Workbook {
 
-    public static final String SHEET_QUESTIONS = "QUESTIONS";
+    public static final String SHEET_QUESTIONS = "questions";
 
     public LAQuestionWB() {
         this.sheets.put(SHEET_QUESTIONS, new QuestionsSheet());
