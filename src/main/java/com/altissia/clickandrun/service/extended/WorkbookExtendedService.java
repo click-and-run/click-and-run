@@ -112,6 +112,11 @@ public class WorkbookExtendedService {
 
             // Read all cell of the first row and check if they match an expected header
             XSSFSheet poiSheet = poiWorkbook.getSheet(sheet.getName());
+            if (poiSheet == null) {
+                sheet.addHeaderError(new FieldValidation("header", "", "com.altissia.constraints.header.empty"));
+                return;
+            }
+
             XSSFRow header = poiSheet.getRow(0);
 
             if (header == null || header.getPhysicalNumberOfCells() == 0) {
