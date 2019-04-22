@@ -1,5 +1,6 @@
 package com.altissia.clickandrun.service.extended.validator.concrete;
 
+import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.LAQuestionRow;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.LAQuestionWB;
@@ -16,7 +17,7 @@ public class DuplicateNameValidator extends DuplicateCellValidator<LAQuestionRow
     }
 
     @Override
-    public boolean isApplicableTo(Sheet<LAQuestionRow> sheet) {
+    public boolean isApplicableTo(Sheet<? extends Row> sheet) {
         return sheet instanceof LAQuestionWB.QuestionsSheet;
     }
 
@@ -27,6 +28,6 @@ public class DuplicateNameValidator extends DuplicateCellValidator<LAQuestionRow
 
     @Override
     public FieldValidation getFieldValidation(LAQuestionRow row) {
-        return new FieldValidation("name", row.getName(), "com.altissia.constraints.learningTheme.name.duplicate");
+        return new FieldValidation("name", row.getName(), "com.altissia.constraints.name.duplicate");
     }
 }

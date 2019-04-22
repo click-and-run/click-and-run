@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Abstract validation class to validate that a record is not defined twice in the same sheet.
- * This validator rely on the equals method of the {@link Row} object.
+ * This validator relies on the equals method of the {@link Row} object.
  */
-public abstract class DuplicateRowValidator extends SheetValidator {
+public abstract class DuplicateRowValidator<T extends Row> extends SheetValidator<T> {
 
     private Severity severity;
 
@@ -22,7 +22,7 @@ public abstract class DuplicateRowValidator extends SheetValidator {
     }
 
     @Override
-    public long validate(Sheet<? extends Row> sheet) {
+    public long validate(Sheet<T> sheet) {
 
         AtomicLong existing = new AtomicLong(0);
 

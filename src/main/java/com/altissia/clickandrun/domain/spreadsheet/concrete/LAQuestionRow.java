@@ -14,7 +14,7 @@ public class LAQuestionRow extends Row {
     private int row;
 
     @ExcelCellName("name")
-    @Pattern(regexp = "\\w+")
+    @Pattern(regexp = "\\w+(?: \\w+)*")
     @NotNull
     private String name;
 
