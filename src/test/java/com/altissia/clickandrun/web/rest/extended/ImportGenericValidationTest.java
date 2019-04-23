@@ -111,8 +111,8 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-start-not-zero.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value("com.altissia.constraints.header.empty"))
-            .andExpect(jsonPath("$.QUESTIONS.valid").value("false"));
+            .andExpect(jsonPath("$.questions.headers.[*].violation").value("com.altissia.constraints.header.empty"))
+            .andExpect(jsonPath("$.questions.valid").value("false"));
     }
 
     /**
@@ -134,8 +134,8 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-header-missing.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
-            .andExpect(jsonPath("$.QUESTIONS.valid").value("false"));
+            .andExpect(jsonPath("$.questions.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.questions.valid").value("false"));
     }
 
     @Test
@@ -145,9 +145,9 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-header-missing.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value("com.altissia.constraints.header.missing"))
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].value").value("placeholder 5"))
-            .andExpect(jsonPath("$.QUESTIONS.valid").value("false"));
+            .andExpect(jsonPath("$.questions.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.questions.headers.[*].value").value("grammar"))
+            .andExpect(jsonPath("$.questions.valid").value("false"));
     }
 
     @Test
@@ -156,9 +156,9 @@ public class ImportGenericValidationTest {
             .fileUpload(VALIDATION_ENDPOINT)
             .file(testFileProvider.getXLSX("/import/generic/error-header-unrecognized.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].violation").value(hasItem("com.altissia.constraints.header.invalid")))
-            .andExpect(jsonPath("$.QUESTIONS.headers.[*].value").value(hasItems("another header", "yet another header")))
-            .andExpect(jsonPath("$.QUESTIONS.valid").value("false"));
+            .andExpect(jsonPath("$.questions.headers.[*].violation").value(hasItem("com.altissia.constraints.header.invalid")))
+            .andExpect(jsonPath("$.questions.headers.[*].value").value(hasItems("another header", "yet another header")))
+            .andExpect(jsonPath("$.questions.valid").value("false"));
     }
 
     @Test
@@ -174,7 +174,7 @@ public class ImportGenericValidationTest {
     public void testValidationOrdering() throws Exception {
         String firstResponse = restMock.perform(MockMvcRequestBuilders
             .fileUpload(VALIDATION_ENDPOINT)
-            .file(testFileProvider.getXLSX("/import/user/error-validation.xlsx")))
+            .file(testFileProvider.getXLSX("/import/generic/error-validation.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andReturn()
@@ -183,7 +183,7 @@ public class ImportGenericValidationTest {
 
         String secondResponse = restMock.perform(MockMvcRequestBuilders
             .fileUpload(VALIDATION_ENDPOINT)
-            .file(testFileProvider.getXLSX("/import/user/error-validation.xlsx")))
+            .file(testFileProvider.getXLSX("/import/generic/error-validation.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andReturn()
