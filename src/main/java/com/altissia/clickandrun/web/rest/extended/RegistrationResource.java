@@ -1,7 +1,8 @@
 package com.altissia.clickandrun.web.rest.extended;
 
+
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
-import com.altissia.clickandrun.domain.spreadsheet.concrete.LAQuestionWB;
+import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWB;
 import com.altissia.clickandrun.domain.spreadsheet.validation.SheetValidation;
 import com.altissia.clickandrun.service.extended.WorkbookExtendedService;
 import com.codahale.metrics.annotation.Timed;
@@ -18,23 +19,31 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/la-questions")
-public class LAQuestionResource {
+@RequestMapping("/registration")
+public class RegistrationResource {
 
-    private final Logger log = LoggerFactory.getLogger(LAQuestionResource.class);
+    private final Logger log = LoggerFactory.getLogger(RegistrationResource.class);
 
     private final WorkbookExtendedService workbookExtendedService;
 
-    public LAQuestionResource(WorkbookExtendedService workbookExtendedService) {
+    public RegistrationResource(WorkbookExtendedService workbookExtendedService) {
         this.workbookExtendedService = workbookExtendedService;
     }
 
     @Timed
     @PostMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Map<String, SheetValidation>> validateFile(@RequestParam(name = "file") MultipartFile file) {
-        log.debug("REST request to /la-questions/validate with {}", file.getOriginalFilename());
+        log.debug("REST request to /registration/validate with {}", file.getOriginalFilename());
 
-        Workbook workbook = workbookExtendedService.validateWorkbook(file, new LAQuestionWB());
+        Workbook workbook;
+
+        // todo ExceptionTranslator rather than try catch
+        try {
+            workbook = workbookExtendedService.validateWorkbook(file, new RegistrationWB());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().header("click-and-run-error", e.getMessage()).build();
+        }
+
         return ResponseEntity.ok(workbook.getValidations());
     }
 }

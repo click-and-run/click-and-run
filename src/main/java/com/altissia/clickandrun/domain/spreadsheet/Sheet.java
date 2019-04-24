@@ -58,8 +58,8 @@ public abstract class Sheet<T extends Row> {
         return rows;
     }
 
-    public void setRows(List<T> rows) {
-        this.rows = rows;
+    public void setRows(List<? extends Row> rows) {
+        this.rows = (List<T>) rows;
     }
 
     public SheetValidation getValidity() {
@@ -75,7 +75,7 @@ public abstract class Sheet<T extends Row> {
         List<String> headers = new ArrayList<>();
 
         // Retrieve all expected header fields
-        for (Field field : this.model.getDeclaredFields()) {
+        for (Field field : this.getModel().getDeclaredFields()) {
             ExcelCellName excelCellName = field.getAnnotation(ExcelCellName.class);
             if (excelCellName != null) {
                 headers.add(excelCellName.value());

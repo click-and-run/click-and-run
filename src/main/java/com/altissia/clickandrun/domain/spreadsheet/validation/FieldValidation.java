@@ -73,9 +73,12 @@ public class FieldValidation implements Comparable<FieldValidation> {
 	@Override
 	public int compareTo(FieldValidation other) {
 		int compare = this.getField().compareTo(other.getField());
-		if (compare == 0) {
-			compare = this.getViolation().compareTo(other.getViolation());
-		}
+        if (compare == 0) {
+            compare = this.getViolation().compareTo(other.getViolation());
+        }
+        if (compare == 0) {
+            compare = this.getValue().compareTo(other.getValue());
+        }
 		return compare;
 	}
 }
