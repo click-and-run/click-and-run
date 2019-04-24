@@ -15,15 +15,13 @@ public class RegistrantRow extends Row {
     @ExcelRow
     private int row;
 
-    // todo fancy regex forbid special characters or sequential non letter
-    // todo max length (careful as it is optional)
+    // todo fancy regex forbid special characters or sequential non letter https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("First Name")
-    @Length(min = 2, max = 50)
+    @Length(max = 50)
     @Pattern(regexp = "\\p{Lu}\\p{Ll}+")
     private String firstName;
 
-    // todo min and max length
-    // todo fancy regex forbid special characters or sequential non letter
+    // todo fancy regex forbid special characters or sequential non letter https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Last Name")
     @NotNull
     @Length(min = 2, max = 100)
@@ -34,7 +32,7 @@ public class RegistrantRow extends Row {
     @NotNull
     private String login;
 
-    // todo Test membership of LanguageEnum with type = interface
+    // todo Test membership of LanguageEnum with type = interface https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Interface Language")
     @NotNull
     private String interfaceLanguage;

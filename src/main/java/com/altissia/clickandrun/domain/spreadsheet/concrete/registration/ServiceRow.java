@@ -20,19 +20,17 @@ public class ServiceRow extends Row {
     @NotNull
     private String login;
 
-    // todo Test membership of ServiceEnum
+    // todo Test membership of ServiceEnum https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("License")
     @NotNull
     private String service;
 
-    // todo Test membership of LanguageEnum with type = study
+    // todo Test membership of LanguageEnum with type = study https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Language")
     @NotNull
     private String studyLanguage;
 
     @ExcelCellName("Duration")
-    // todo value between 1 and 365 only if present
-    // todo maybe implement an optional annotation ?
     @Min(0)
     @Max(365)
     private int duration;

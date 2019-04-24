@@ -37,7 +37,7 @@ public class RegistrationResource {
 
         Workbook workbook;
 
-        // todo ExceptionTranslator rather than try catch
+        // todo ExceptionTranslator rather than try catch https://github.com/click-and-run/click-and-run/issues/6
         try {
             workbook = workbookExtendedService.validateWorkbook(file, new RegistrationWB());
         } catch (IllegalArgumentException e) {
