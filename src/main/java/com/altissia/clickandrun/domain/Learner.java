@@ -15,12 +15,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A User.
+ * A Learner.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "learner")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User implements Serializable {
+public class Learner implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +48,7 @@ public class User implements Serializable {
     @Column(name = "interface_language", nullable = false)
     private Language interfaceLanguage;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "learner")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<License> licenses = new HashSet<>();
@@ -65,7 +65,7 @@ public class User implements Serializable {
         return firstName;
     }
 
-    public User firstName(String firstName) {
+    public Learner firstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -78,7 +78,7 @@ public class User implements Serializable {
         return lastName;
     }
 
-    public User lastName(String lastName) {
+    public Learner lastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -91,7 +91,7 @@ public class User implements Serializable {
         return login;
     }
 
-    public User login(String login) {
+    public Learner login(String login) {
         this.login = login;
         return this;
     }
@@ -104,7 +104,7 @@ public class User implements Serializable {
         return interfaceLanguage;
     }
 
-    public User interfaceLanguage(Language interfaceLanguage) {
+    public Learner interfaceLanguage(Language interfaceLanguage) {
         this.interfaceLanguage = interfaceLanguage;
         return this;
     }
@@ -117,20 +117,20 @@ public class User implements Serializable {
         return licenses;
     }
 
-    public User licenses(Set<License> licenses) {
+    public Learner licenses(Set<License> licenses) {
         this.licenses = licenses;
         return this;
     }
 
-    public User addLicenses(License license) {
+    public Learner addLicenses(License license) {
         this.licenses.add(license);
-        license.setUser(this);
+        license.setLearner(this);
         return this;
     }
 
-    public User removeLicenses(License license) {
+    public Learner removeLicenses(License license) {
         this.licenses.remove(license);
-        license.setUser(null);
+        license.setLearner(null);
         return this;
     }
 
@@ -146,11 +146,11 @@ public class User implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        User user = (User) o;
-        if (user.getId() == null || getId() == null) {
+        Learner learner = (Learner) o;
+        if (learner.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), user.getId());
+        return Objects.equals(getId(), learner.getId());
     }
 
     @Override
@@ -160,7 +160,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Learner{" +
             "id=" + getId() +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +

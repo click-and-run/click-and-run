@@ -40,7 +40,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="user_id" type="bigint">
+            <column name="learner_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

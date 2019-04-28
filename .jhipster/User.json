@@ -5,7 +5,7 @@
             "relationshipName": "licenses",
             "otherEntityName": "license",
             "relationshipType": "one-to-many",
-            "otherEntityRelationshipName": "user"
+            "otherEntityRelationshipName": "learner"
         }
     ],
     "fields": [
@@ -51,7 +51,7 @@
     "changelogDate": "20190428154907",
     "dto": "no",
     "service": "no",
-    "entityTableName": "user",
+    "entityTableName": "learner",
     "pagination": "pagination",
     "microserviceName": "clickAndRun",
     "searchEngine": false

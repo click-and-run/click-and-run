@@ -2,8 +2,8 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "user",
-            "otherEntityName": "user",
+            "relationshipName": "learner",
+            "otherEntityName": "learner",
             "relationshipType": "many-to-one",
             "otherEntityField": "login"
         }
