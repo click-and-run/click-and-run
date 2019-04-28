@@ -1,6 +1,7 @@
 package com.altissia.clickandrun.domain;
 
 import com.altissia.clickandrun.domain.enumeration.Language;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A User.
@@ -44,6 +47,11 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "interface_language", nullable = false)
     private Language interfaceLanguage;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<License> licenses = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -103,6 +111,31 @@ public class User implements Serializable {
 
     public void setInterfaceLanguage(Language interfaceLanguage) {
         this.interfaceLanguage = interfaceLanguage;
+    }
+
+    public Set<License> getLicenses() {
+        return licenses;
+    }
+
+    public User licenses(Set<License> licenses) {
+        this.licenses = licenses;
+        return this;
+    }
+
+    public User addLicenses(License license) {
+        this.licenses.add(license);
+        license.setUser(this);
+        return this;
+    }
+
+    public User removeLicenses(License license) {
+        this.licenses.remove(license);
+        license.setUser(null);
+        return this;
+    }
+
+    public void setLicenses(Set<License> licenses) {
+        this.licenses = licenses;
     }
 
     @Override

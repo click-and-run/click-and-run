@@ -46,6 +46,9 @@ public class License implements Serializable {
     @Column(name = "consumed")
     private Boolean consumed;
 
+    @ManyToOne
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -117,6 +120,19 @@ public class License implements Serializable {
 
     public void setConsumed(Boolean consumed) {
         this.consumed = consumed;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public License user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
