@@ -1,6 +1,13 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "licenses",
+            "otherEntityName": "license",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "user"
+        }
+    ],
     "fields": [
         {
             "fieldName": "firstName",
