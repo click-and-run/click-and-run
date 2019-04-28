@@ -47,7 +47,7 @@ public class License implements Serializable {
     private Boolean consumed;
 
     @ManyToOne
-    private User user;
+    private Learner learner;
 
     public Long getId() {
         return id;
@@ -122,17 +122,17 @@ public class License implements Serializable {
         this.consumed = consumed;
     }
 
-    public User getUser() {
-        return user;
+    public Learner getLearner() {
+        return learner;
     }
 
-    public License user(User user) {
-        this.user = user;
+    public License learner(Learner learner) {
+        this.learner = learner;
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setLearner(Learner learner) {
+        this.learner = learner;
     }
 
     @Override
