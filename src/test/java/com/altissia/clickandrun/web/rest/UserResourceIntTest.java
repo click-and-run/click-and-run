@@ -2,6 +2,7 @@ package com.altissia.clickandrun.web.rest;
 
 import com.altissia.clickandrun.ClickAndRunApp;
 import com.altissia.clickandrun.domain.User;
+import com.altissia.clickandrun.domain.enumeration.Language;
 import com.altissia.clickandrun.repository.UserRepository;
 import com.altissia.clickandrun.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
@@ -20,13 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Test class for the UserResource REST controller.
  *
@@ -45,8 +44,8 @@ public class UserResourceIntTest {
     private static final String DEFAULT_LOGIN = "ahorgnies@altissia.org";
     private static final String UPDATED_LOGIN = "rlaloux@altissia.org";
 
-    private static final Locale DEFAULT_INTERFACE_LANGUAGE = Locale.FRANCE;
-    private static final Locale UPDATED_INTERFACE_LANGUAGE = Locale.UK;
+    private static final Language DEFAULT_INTERFACE_LANGUAGE = Language.FR_FR;
+    private static final Language UPDATED_INTERFACE_LANGUAGE = Language.NL_BE;
 
     @Autowired
     private UserRepository userRepository;
