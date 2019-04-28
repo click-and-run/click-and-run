@@ -34,7 +34,8 @@
         },
         {
             "fieldName": "interfaceLanguage",
-            "fieldType": "String",
+            "fieldType": "Language",
+            "fieldValues": "FR_FR,NL_BE,DE_DE,ES_ES,IT_IT,EN_GB",
             "fieldValidateRules": [
                 "required"
             ]

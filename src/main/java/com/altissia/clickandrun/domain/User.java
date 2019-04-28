@@ -1,15 +1,14 @@
 package com.altissia.clickandrun.domain;
 
+import com.altissia.clickandrun.domain.enumeration.Language;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -38,13 +37,13 @@ public class User implements Serializable {
     private String lastName;
 
     @NotNull
-    @Email
     @Column(name = "login", nullable = false)
     private String login;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "interface_language", nullable = false)
-    private Locale interfaceLanguage;
+    private Language interfaceLanguage;
 
     public Long getId() {
         return id;
@@ -93,16 +92,16 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public Locale getInterfaceLanguage() {
+    public Language getInterfaceLanguage() {
         return interfaceLanguage;
     }
 
-    public User interfaceLanguage(Locale interfaceLanguage) {
+    public User interfaceLanguage(Language interfaceLanguage) {
         this.interfaceLanguage = interfaceLanguage;
         return this;
     }
 
-    public void setInterfaceLanguage(Locale interfaceLanguage) {
+    public void setInterfaceLanguage(Language interfaceLanguage) {
         this.interfaceLanguage = interfaceLanguage;
     }
 
