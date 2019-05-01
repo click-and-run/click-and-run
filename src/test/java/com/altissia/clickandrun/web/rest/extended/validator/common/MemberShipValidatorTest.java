@@ -23,34 +23,28 @@ public class MemberShipValidatorTest {
 
     private ServiceRow serviceRow = new ServiceRow();
     private Validator beanValidator;
-    private Field service;
 
     @Before
     public void setUp() throws NoSuchFieldException, IllegalAccessException {
         ValidatorFactory beanValidatorFactory = Validation.buildDefaultValidatorFactory();
         beanValidator = beanValidatorFactory.getValidator();
 
-        Field row = serviceRow.getClass().getDeclaredField("row");
-        row.setAccessible(true);
-        row.set(serviceRow, 1);
-        Field login = serviceRow.getClass().getDeclaredField("login");
-        login.setAccessible(true);
-        login.set(serviceRow, "ahorgnies@altissia.org");
-        service = serviceRow.getClass().getDeclaredField("service");
-        service.setAccessible(true);
-        service.set(serviceRow, "COURSE");
-        Field studyLanguage = serviceRow.getClass().getDeclaredField("studyLanguage");
-        studyLanguage.setAccessible(true);
-        studyLanguage.set(serviceRow, "EN_GB");
-        Field duration = serviceRow.getClass().getDeclaredField("duration");
-        duration.setAccessible(true);
-        duration.set(serviceRow, 5);
+        field("row", 1);
+        field("login", "ahorgnies@altissia.org");
+        field("service", "COURSE");
+        field("studyLanguage", "EN_GB");
+        field("duration", 5);
+    }
 
+    private void field(String name, Object value) throws NoSuchFieldException, IllegalAccessException {
+        Field field = serviceRow.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        field.set(serviceRow, value);
     }
 
     @Test
-    public void testNull() throws IllegalAccessException {
-        service.set(serviceRow, null);
+    public void testNull() throws IllegalAccessException, NoSuchFieldException {
+        field("service", null);
         Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
 
         assertThat(violations, hasSize(1));
@@ -62,8 +56,8 @@ public class MemberShipValidatorTest {
     }
 
     @Test
-    public void testBlank() throws IllegalAccessException {
-        service.set(serviceRow, "");
+    public void testBlank() throws IllegalAccessException, NoSuchFieldException {
+        field("service", "");
         Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
 
         assertThat(violations, hasSize(1));
@@ -75,8 +69,8 @@ public class MemberShipValidatorTest {
     }
 
     @Test
-    public void testWrong() throws IllegalAccessException {
-        service.set(serviceRow, "NOT_A_SERVICE");
+    public void testWrong() throws IllegalAccessException, NoSuchFieldException {
+        field("service", "NOT_A_SERVICE");
         Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
 
         assertThat(violations, hasSize(1));
@@ -88,8 +82,8 @@ public class MemberShipValidatorTest {
     }
 
     @Test
-    public void testNominal() throws IllegalAccessException {
-        service.set(serviceRow, Service.COURSE.name());
+    public void testNominal() throws IllegalAccessException, NoSuchFieldException {
+        field("service", Service.COURSE.name());
         Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
 
         assertThat(violations, hasSize(0));
