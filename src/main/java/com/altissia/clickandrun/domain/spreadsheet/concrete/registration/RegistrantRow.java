@@ -1,6 +1,7 @@
 package com.altissia.clickandrun.domain.spreadsheet.concrete.registration;
 
 import com.altissia.clickandrun.domain.spreadsheet.Row;
+import com.altissia.clickandrun.service.extended.validator.common.InterfaceLanguage;
 import com.poiji.annotation.ExcelCellName;
 import com.poiji.annotation.ExcelRow;
 import org.hibernate.validator.constraints.Email;
@@ -31,9 +32,8 @@ public class RegistrantRow extends Row {
     @NotNull
     private String login;
 
-    // todo Test membership of LanguageEnum with type = interface https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Interface Language")
-    @NotNull
+    @InterfaceLanguage
     private String interfaceLanguage;
 
     @Override
