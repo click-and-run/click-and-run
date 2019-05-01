@@ -18,7 +18,6 @@ public @interface Membership {
 
     Class<?>[] groups() default {};
 
-    // todo define severity as a payload
     Class<? extends Payload>[] payload() default {};
 
     Class<? extends Enum> value();
