@@ -42,7 +42,7 @@ public class LicenseResourceIntTest {
     private static final Service UPDATED_SERVICE = Service.ASSESSMENT;
 
     private static final Language DEFAULT_STUDY_LANGUAGE = Language.FR_FR;
-    private static final Language UPDATED_STUDY_LANGUAGE = Language.NL_BE;
+    private static final Language UPDATED_STUDY_LANGUAGE = Language.NL_NL;
 
     private static final Instant DEFAULT_VALID_SINCE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_SINCE = Instant.now().truncatedTo(ChronoUnit.MILLIS);

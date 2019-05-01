@@ -45,7 +45,7 @@ public class LearnerResourceIntTest {
     private static final String UPDATED_LOGIN = "rlaloux@altissia.org";
 
     private static final Language DEFAULT_INTERFACE_LANGUAGE = Language.FR_FR;
-    private static final Language UPDATED_INTERFACE_LANGUAGE = Language.NL_BE;
+    private static final Language UPDATED_INTERFACE_LANGUAGE = Language.NL_NL;
 
     @Autowired
     private LearnerRepository learnerRepository;

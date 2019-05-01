@@ -77,7 +77,7 @@ public class StudyLanguageValidatorTest {
 
     @Test
     public void testNotStudyLanguage() throws IllegalAccessException, NoSuchFieldException {
-        field("studyLanguage", Language.EN_GB.name());
+        field("studyLanguage", Language.IT_IT.name());
         Set<ConstraintViolation<ServiceRow>> violations = v.validate(serviceRow);
 
         isStudyLanguageViolation(violations);
