@@ -3,6 +3,7 @@ package com.altissia.clickandrun.domain.spreadsheet.concrete.registration;
 import com.altissia.clickandrun.domain.enumeration.Service;
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.service.extended.validator.common.Membership;
+import com.altissia.clickandrun.service.extended.validator.common.StudyLanguage;
 import com.poiji.annotation.ExcelCellName;
 import com.poiji.annotation.ExcelRow;
 import org.hibernate.validator.constraints.Email;
@@ -27,7 +28,7 @@ public class ServiceRow extends Row {
     private String service;
 
     @ExcelCellName("Language")
-    @NotNull
+    @StudyLanguage
     private String studyLanguage;
 
     @ExcelCellName("Duration")
