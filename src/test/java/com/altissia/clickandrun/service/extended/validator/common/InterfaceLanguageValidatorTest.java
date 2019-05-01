@@ -1,8 +1,7 @@
-package com.altissia.clickandrun.web.rest.extended.validator.common;
+package com.altissia.clickandrun.service.extended.validator.common;
 
 import com.altissia.clickandrun.domain.enumeration.Language;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrantRow;
-import com.altissia.clickandrun.service.extended.validator.common.InterfaceLanguage;
 import org.junit.Before;
 import org.junit.Test;
 
