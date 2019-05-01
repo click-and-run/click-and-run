@@ -15,16 +15,15 @@ public class RegistrantRow extends Row {
     @ExcelRow
     private int row;
 
-    // todo fancy regex forbid special characters or sequential non letter https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("First Name")
     @Length(max = 50)
     @Pattern(regexp = "\\p{Lu}\\p{Ll}+")
     private String firstName;
 
-    // todo fancy regex forbid special characters or sequential non letter https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Last Name")
     @NotNull
     @Length(min = 2, max = 100)
+    @Pattern(regexp = "\\p{Lu}\\p{Ll}+")
     private String lastName;
 
     @ExcelCellName("Email")
