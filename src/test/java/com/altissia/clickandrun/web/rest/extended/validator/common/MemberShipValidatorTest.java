@@ -42,17 +42,21 @@ public class MemberShipValidatorTest {
         field.set(serviceRow, value);
     }
 
-    @Test
-    public void testNull() throws IllegalAccessException, NoSuchFieldException {
-        field("service", null);
-        Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
-
+    private void isMembershipViolation(Set<ConstraintViolation<ServiceRow>> violations) {
         assertThat(violations, hasSize(1));
 
         ConstraintViolation<ServiceRow> v = new ArrayList<>(violations).get(0);
 
         assertThat(v.getPropertyPath().toString(), is("service"));
         assertThat(v.getConstraintDescriptor().getAnnotation(), instanceOf(Membership.class));
+    }
+
+    @Test
+    public void testNull() throws IllegalAccessException, NoSuchFieldException {
+        field("service", null);
+        Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
+
+        isMembershipViolation(violations);
     }
 
     @Test
@@ -60,12 +64,7 @@ public class MemberShipValidatorTest {
         field("service", "");
         Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
 
-        assertThat(violations, hasSize(1));
-
-        ConstraintViolation<ServiceRow> v = new ArrayList<>(violations).get(0);
-
-        assertThat(v.getPropertyPath().toString(), is("service"));
-        assertThat(v.getConstraintDescriptor().getAnnotation(), instanceOf(Membership.class));
+        isMembershipViolation(violations);
     }
 
     @Test
@@ -73,12 +72,7 @@ public class MemberShipValidatorTest {
         field("service", "NOT_A_SERVICE");
         Set<ConstraintViolation<ServiceRow>> violations = beanValidator.validate(serviceRow);
 
-        assertThat(violations, hasSize(1));
-
-        ConstraintViolation<ServiceRow> v = new ArrayList<>(violations).get(0);
-
-        assertThat(v.getPropertyPath().toString(), is("service"));
-        assertThat(v.getConstraintDescriptor().getAnnotation(), instanceOf(Membership.class));
+        isMembershipViolation(violations);
     }
 
     @Test
