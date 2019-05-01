@@ -31,7 +31,7 @@ public class MemberShipValidatorTest {
         field("row", 1);
         field("login", "ahorgnies@altissia.org");
         field("service", "COURSE");
-        field("studyLanguage", "EN_GB");
+        field("studyLanguage", "FR_FR");
         field("duration", 5);
     }
 
