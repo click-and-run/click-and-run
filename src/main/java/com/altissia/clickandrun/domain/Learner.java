@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A Learner.
@@ -51,7 +51,7 @@ public class Learner implements Serializable {
     @OneToMany(mappedBy = "learner")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<License> licenses = new HashSet<>();
+    private List<License> licenses = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -113,11 +113,11 @@ public class Learner implements Serializable {
         this.interfaceLanguage = interfaceLanguage;
     }
 
-    public Set<License> getLicenses() {
+    public List<License> getLicenses() {
         return licenses;
     }
 
-    public Learner licenses(Set<License> licenses) {
+    public Learner licenses(List<License> licenses) {
         this.licenses = licenses;
         return this;
     }
@@ -134,7 +134,7 @@ public class Learner implements Serializable {
         return this;
     }
 
-    public void setLicenses(Set<License> licenses) {
+    public void setLicenses(List<License> licenses) {
         this.licenses = licenses;
     }
 
