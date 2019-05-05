@@ -6,6 +6,9 @@ import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.HeaderValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
+import com.altissia.clickandrun.service.extended.processor.Processor;
+import com.altissia.clickandrun.service.extended.processor.ProcessorOptions;
+import com.altissia.clickandrun.service.extended.processor.ProcessorResult;
 import com.altissia.clickandrun.service.extended.validator.SheetValidator;
 import com.poiji.bind.Poiji;
 import com.poiji.exception.PoijiExcelType;
@@ -38,9 +41,11 @@ public class WorkbookExtendedService {
 
     private final List<SheetValidator> sheetValidators;
 
-    public WorkbookExtendedService(List<SheetValidator> sheetValidators) {
+    private final List<Processor> processors;
 
+    public WorkbookExtendedService(List<SheetValidator> sheetValidators, List<Processor> processors) {
         this.sheetValidators = sheetValidators;
+        this.processors = processors;
     }
 
     public Workbook validateWorkbook(MultipartFile file, Workbook workbook) {
@@ -64,6 +69,44 @@ public class WorkbookExtendedService {
         });
 
         return workbook;
+    }
+
+    public ProcessorResult processWorkbook(MultipartFile file, Workbook workbook) {
+        return this.processWorkbook(file, workbook, new ProcessorOptions());
+    }
+
+    public ProcessorResult processWorkbook(MultipartFile file, Workbook workbook, ProcessorOptions processorOptions) {
+        this.validateWorkbook(file, workbook);
+
+        // If no *error* has been found then process (maybe with warnings)
+        if (workbook.isValid()) {
+
+            if (log.isDebugEnabled()) {
+                log.debug("Applying suitable processor out of:");
+                this.processors.forEach(p -> log.debug(" * {}", p.getClass().getSimpleName()));
+            }
+
+            Processor processor = this.processors.stream()
+                .filter(p -> p.isApplicableTo(workbook))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No processor found for workbook " + workbook.getClass().getSimpleName()));
+
+            log.debug("Processor found: {}", processor.getClass().getSimpleName());
+
+            return processor.process(workbook, processorOptions);
+        }
+
+        log.error("Skipping processor execution due to error found in the workbook");
+        if (log.isDebugEnabled()) {
+            workbook.getValidations().forEach((sheet, validations) -> {
+                log.debug("Validation detail for sheet {}", sheet);
+                log.debug(" * {} header error found ", validations.getHeaders().size());
+                log.debug(" * {} error found ", validations.getErrors().size());
+                log.debug(" * {} warning found ", validations.getWarnings().size());
+            });
+        }
+
+        throw new IllegalArgumentException("com.altissia.clickandrun.workbook.invalid");
     }
 
     private XSSFWorkbook openWorkbook(MultipartFile file) {

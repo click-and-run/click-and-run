@@ -5,6 +5,7 @@ import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.validation.SheetValidation;
 import com.altissia.clickandrun.service.extended.WorkbookExtendedService;
+import com.altissia.clickandrun.service.extended.processor.ProcessorResult;
 import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +46,23 @@ public class RegistrationResource {
         }
 
         return ResponseEntity.ok(workbook.getValidations());
+    }
+
+    @Timed
+    @PostMapping(value = "/process", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity createFromFile(
+        @RequestParam(name = "file") MultipartFile file) {
+        log.debug("REST request to /registration/process with {}", file.getOriginalFilename());
+
+        ProcessorResult processorResult;
+
+        // todo ExceptionTranslator rather than try catch https://github.com/click-and-run/click-and-run/issues/6
+        try {
+            processorResult = this.workbookExtendedService.processWorkbook(file, new RegistrationWB());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().header("click-and-run-error", e.getMessage()).build();
+        }
+
+        return ResponseEntity.ok(processorResult);
     }
 }

@@ -30,7 +30,7 @@ public class SheetValidation {
 		this.headers.add(violation);
 	}
 
-	public Set<RowValidation> getError() {
+	public Set<RowValidation> getErrors() {
 		return error;
 	}
 
@@ -38,7 +38,7 @@ public class SheetValidation {
 		this.error.add(error);
 	}
 
-	public Set<RowValidation> getWarning() {
+	public Set<RowValidation> getWarnings() {
 		return warning;
 	}
 

@@ -121,11 +121,11 @@ public abstract class Sheet<T extends Row> {
     }
 
     public boolean hasError() {
-        return !this.validity.getError().isEmpty();
+        return !this.validity.getErrors().isEmpty();
     }
 
     public boolean hasWarning() {
-        return !this.validity.getWarning().isEmpty();
+        return !this.validity.getWarnings().isEmpty();
     }
 
     @Override
