@@ -15,7 +15,7 @@
 
 eureka:
     client:
-        enabled: true
+        enabled: false
     instance:
         appname: clickAndRun
         instanceId: clickAndRun:${spring.application.instance-id:${random.value}}
