@@ -41,6 +41,17 @@ public class RegistrationProcessor extends Processor<RegistrationResult, Process
 
     @Override
     public RegistrationResult process(Workbook workbook, ProcessorOptions options) {
+        ImmutableMap<String, Learner> learnersMap = processRegistrantRows(workbook);
+        List<License> licenses = processServiceRows(workbook, learnersMap);
+
+        RegistrationResult registrationResult = new RegistrationResult();
+        registrationResult.setLearnerCreated(learnersMap.size());
+        registrationResult.setLicenseCreated(licenses.size());
+
+        return registrationResult;
+    }
+
+    private ImmutableMap<String, Learner> processRegistrantRows(Workbook workbook) {
         //noinspection unchecked
         List<RegistrantRow> learnerRows = (List<RegistrantRow>) workbook.getSheetRows(SHEET_REGISTRANTS);
         List<Learner> learners = learnerRows.stream()
@@ -55,8 +66,10 @@ public class RegistrationProcessor extends Processor<RegistrationResult, Process
             }).collect(Collectors.toList());
         learnerRepository.save(learners);
 
-        ImmutableMap<String, Learner> learnersMap = Maps.uniqueIndex(learners, Learner::getLogin);
+        return Maps.uniqueIndex(learners, Learner::getLogin);
+    }
 
+    private List<License> processServiceRows(Workbook workbook, ImmutableMap<String, Learner> learnersMap) {
         //noinspection unchecked
         List<ServiceRow> serviceRows = (List<ServiceRow>) workbook.getSheetRows(SHEET_SERVICES);
 
@@ -74,11 +87,6 @@ public class RegistrationProcessor extends Processor<RegistrationResult, Process
             .collect(Collectors.toList());
 
         licenseRepository.save(licenses);
-
-        RegistrationResult registrationResult = new RegistrationResult();
-        registrationResult.setLearnerCreated(learners.size());
-        registrationResult.setLicenseCreated(licenses.size());
-
-        return registrationResult;
+        return licenses;
     }
 }
