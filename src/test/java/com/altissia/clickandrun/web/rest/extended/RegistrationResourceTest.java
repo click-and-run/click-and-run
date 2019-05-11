@@ -147,7 +147,7 @@ public class RegistrationResourceTest {
     public void testUndefinedRegistrant() throws Exception {
         restMock.perform(MockMvcRequestBuilders
             .fileUpload(VALIDATION_ENDPOINT)
-            .file(testFileProvider.getXLSX("/import/registration/duplicate-service.xlsx")))
+            .file(testFileProvider.getXLSX("/import/registration/undefined-registrant.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
