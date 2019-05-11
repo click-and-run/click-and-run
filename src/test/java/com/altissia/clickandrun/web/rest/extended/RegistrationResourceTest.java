@@ -2,6 +2,8 @@ package com.altissia.clickandrun.web.rest.extended;
 
 import com.altissia.clickandrun.ClickAndRunApp;
 import com.altissia.clickandrun.TestFileProvider;
+import com.altissia.clickandrun.domain.Learner;
+import com.altissia.clickandrun.domain.enumeration.Language;
 import com.altissia.clickandrun.service.extended.WorkbookExtendedService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,6 +39,9 @@ public class RegistrationResourceTest {
 
     @Autowired
     private WorkbookExtendedService workbookExtendedService;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private MockMvc restMock;
 
@@ -80,8 +87,28 @@ public class RegistrationResourceTest {
     }
 
     @Test
-    public void testUsedLogin() {
-        assert false;
+    public void testUsedLogin() throws Exception {
+        Learner learner = new Learner();
+        learner.setLogin("ahorgnies@altissia.org");
+        learner.setFirstName("Adrien");
+        learner.setLastName("Horgnies");
+        learner.setInterfaceLanguage(Language.EN_GB);
+
+        entityManager.persist(learner);
+        entityManager.flush();
+
+        restMock.perform(MockMvcRequestBuilders
+            .fileUpload(VALIDATION_ENDPOINT)
+            .file(testFileProvider.getXLSX("/import/registration/used-login.xlsx")))
+            .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.registrants.valid").value("false"))
+            .andExpect(jsonPath("$.services.valid").value("true"))
+            .andExpect(jsonPath("$.registrants.errors").value(hasSize(1)))
+            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].field").value(is("login")))
+            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.login.used")))
+            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].value").value(is("ahorgnies@altissia.org")));
     }
 
     @Test
