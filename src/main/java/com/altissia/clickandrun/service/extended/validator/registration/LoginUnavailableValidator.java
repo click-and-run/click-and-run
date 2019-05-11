@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
-public class LoginAvailableValidator extends SheetValidator<RegistrantRow> {
+public class LoginUnavailableValidator extends SheetValidator<RegistrantRow> {
 
     private final LearnerRepository learnerRepository;
 
-    public LoginAvailableValidator(LearnerRepository learnerRepository) {
+    public LoginUnavailableValidator(LearnerRepository learnerRepository) {
         this.learnerRepository = learnerRepository;
     }
 
@@ -35,7 +35,7 @@ public class LoginAvailableValidator extends SheetValidator<RegistrantRow> {
         AtomicLong used = new AtomicLong(0);
         learnerRepository.findAllByLoginIn(rowsByLogin.keySet()).forEach(learner -> rowsByLogin.get(learner.getLogin()).forEach(rowWithUsedLogin -> {
             used.getAndIncrement();
-            sheet.addRowError(new RowValidation(rowWithUsedLogin.getRow(), new FieldValidation("login", rowWithUsedLogin.getLogin(), "com.altissia.constraints.login.used")));
+            sheet.addRowError(new RowValidation(rowWithUsedLogin.getRow(), new FieldValidation("login", rowWithUsedLogin.getLogin(), "com.altissia.constraints.login.unavailable")));
         }));
 
         return used.get();

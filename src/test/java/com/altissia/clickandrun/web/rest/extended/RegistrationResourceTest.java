@@ -87,7 +87,7 @@ public class RegistrationResourceTest {
     }
 
     @Test
-    public void testUsedLogin() throws Exception {
+    public void testUnavailableLogin() throws Exception {
         Learner learner = new Learner();
         learner.setLogin("ahorgnies@altissia.org");
         learner.setFirstName("Adrien");
@@ -107,7 +107,7 @@ public class RegistrationResourceTest {
             .andExpect(jsonPath("$.services.valid").value("true"))
             .andExpect(jsonPath("$.registrants.errors").value(hasSize(1)))
             .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].field").value(is("login")))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.login.used")))
+            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.login.unavailable")))
             .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].value").value(is("ahorgnies@altissia.org")));
     }
 
@@ -131,5 +131,4 @@ public class RegistrationResourceTest {
     public void testUndefinedServiceEmail() {
         assert false;
     }
-
 }
