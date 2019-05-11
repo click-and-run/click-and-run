@@ -112,8 +112,19 @@ public class RegistrationResourceTest {
     }
 
     @Test
-    public void testDuplicateService() {
-        assert false;
+    public void testDuplicateService() throws Exception {
+        restMock.perform(MockMvcRequestBuilders
+            .fileUpload(VALIDATION_ENDPOINT)
+            .file(testFileProvider.getXLSX("/import/registration/duplicate-service.xlsx")))
+            .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.services.valid").value("false"))
+            .andExpect(jsonPath("$.services.errors").value(hasSize(2)))
+            .andExpect(jsonPath("$.services.errors.[*].violations.[0].field").value(everyItem(is("login"))))
+            .andExpect(jsonPath("$.services.errors.[*].violations.[0].violation").value(everyItem(is("com.altissia.constraints.service.duplicate"))))
+            .andExpect(jsonPath("$.services.errors.[*].violations.[0].value").value(everyItem(is("adrien.pierre.horgnies@gmail.com"))));
     }
 
     @Test
