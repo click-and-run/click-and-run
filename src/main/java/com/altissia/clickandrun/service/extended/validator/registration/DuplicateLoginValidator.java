@@ -1,4 +1,4 @@
-package com.altissia.clickandrun.service.extended.validator.concrete;
+package com.altissia.clickandrun.service.extended.validator.registration;
 
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
