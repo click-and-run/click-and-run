@@ -54,6 +54,10 @@ public class SheetValidation {
 		return headers.isEmpty() && error.isEmpty();
 	}
 
+    public boolean isHeaderValid() {
+        return headers.isEmpty();
+    }
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

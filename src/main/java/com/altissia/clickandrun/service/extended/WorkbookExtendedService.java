@@ -61,7 +61,7 @@ public class WorkbookExtendedService {
         readWorkbook(file, workbook);
 
         workbook.getSheets().forEach(sheet -> {
-            if (!sheet.isValid()) {
+            if (!sheet.isHeaderValid()) {
                 log.error("Headers are not valid for sheet {}, skipping row and sheet validation", sheet.getName());
                 return;
             }
@@ -71,7 +71,9 @@ public class WorkbookExtendedService {
             validateSheet(sheet);
         });
 
-        validateWorkbook(workbook);
+        if (workbook.getSheets().stream().allMatch(Sheet::isHeaderValid)) {
+            validateWorkbook(workbook);
+        }
 
         return workbook;
     }
