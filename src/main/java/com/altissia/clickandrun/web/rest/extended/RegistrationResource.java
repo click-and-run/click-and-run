@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/registration")
+@RequestMapping("/api/registration")
 public class RegistrationResource {
 
     private final Logger log = LoggerFactory.getLogger(RegistrationResource.class);
