@@ -34,7 +34,7 @@ public class ImportGenericValidationTest {
 
     private static final Logger log = LoggerFactory.getLogger(ImportGenericValidationTest.class);
 
-    private static final String VALIDATION_ENDPOINT = "/registration/validate";
+    private static final String VALIDATION_ENDPOINT = "/api/registration/validate";
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
