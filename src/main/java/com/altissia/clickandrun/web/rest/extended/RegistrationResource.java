@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/registration")
 public class RegistrationResource {
@@ -33,7 +31,7 @@ public class RegistrationResource {
 
     @Timed
     @PostMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Map<String, SheetValidation>> validateFile(@RequestParam(name = "file") MultipartFile file) {
+    public ResponseEntity<Workbook> validateFile(@RequestParam(name = "file") MultipartFile file) {
         log.debug("REST request to /registration/validate with {}", file.getOriginalFilename());
 
         Workbook workbook;
@@ -45,12 +43,12 @@ public class RegistrationResource {
             return ResponseEntity.badRequest().header("click-and-run-error", e.getMessage()).build();
         }
 
-        return ResponseEntity.ok(workbook.getValidations());
+        return ResponseEntity.ok(workbook);
     }
 
     @Timed
     @PostMapping(value = "/process", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity createFromFile(
+    public ResponseEntity<ProcessorResult> createFromFile(
         @RequestParam(name = "file") MultipartFile file) {
         log.debug("REST request to /registration/process with {}", file.getOriginalFilename());
 
