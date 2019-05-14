@@ -64,10 +64,11 @@ public class ImportGenericValidationTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
-            .andExpect(jsonPath("$.registrants.valid").value("false"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
-            .andExpect(jsonPath("$.services.valid").value("false"));
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("false"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].violation").value("com.altissia.constraints.sheet.missing"))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"));
     }
 
     /**
@@ -81,8 +82,9 @@ public class ImportGenericValidationTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.valid").value("true"));
+            .andExpect(jsonPath("$.valid").value("true"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.valid").value("true"));
     }
 
     @Test
@@ -92,10 +94,12 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-start-not-zero.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.headers.[*].violation").value(hasSize(4)))
-            .andExpect(jsonPath("$.registrants.headers.[*].violation").value(everyItem(is("com.altissia.constraints.header.missing"))))
-            .andExpect(jsonPath("$.registrants.headers.[*].column").value(everyItem(is(-1))))
-            .andExpect(jsonPath("$.registrants.valid").value("false"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.headers.[*].violation").value(hasSize(4)))
+            .andExpect(jsonPath("$.validations.registrants.headers.[*].violation").value(everyItem(is("com.altissia.constraints.header.missing"))))
+            .andExpect(jsonPath("$.validations.registrants.headers.[*].column").value(everyItem(is(-1))))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("false"));
     }
 
     /**
@@ -108,8 +112,10 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/valid-wider-than-header.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.valid").value("true"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("true"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.valid").value("true"));
     }
 
     @Test
@@ -119,10 +125,12 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-column-missing.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
-            .andExpect(jsonPath("$.services.headers.[*].column").value(-1))
-            .andExpect(jsonPath("$.services.valid").value("false"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].column").value(-1))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"));
     }
 
     @Test
@@ -132,11 +140,13 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-header-blank.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value(hasSize(2)))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value(containsInAnyOrder("com.altissia.constraints.header.missing", "com.altissia.constraints.header.blank")))
-            .andExpect(jsonPath("$.services.headers.[*].column").value(hasItems(-1, 1)))
-            .andExpect(jsonPath("$.services.valid").value("false"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].violation").value(hasSize(2)))
+            .andExpect(jsonPath("$.validations.services.headers.[*].violation").value(containsInAnyOrder("com.altissia.constraints.header.missing", "com.altissia.constraints.header.blank")))
+            .andExpect(jsonPath("$.validations.services.headers.[*].column").value(hasItems(-1, 1)))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"));
     }
 
     @Test
@@ -146,10 +156,12 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-header-missing.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
-            .andExpect(jsonPath("$.services.headers.[*].column").value(-1))
-            .andExpect(jsonPath("$.services.valid").value("false"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].column").value(-1))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"));
     }
 
     @Test
@@ -158,11 +170,14 @@ public class ImportGenericValidationTest {
             .fileUpload(VALIDATION_ENDPOINT)
             .file(testFileProvider.getXLSX("/import/generic/error-unknown-header.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value(hasItem("com.altissia.constraints.header.invalid")))
-            .andExpect(jsonPath("$.services.headers.[*].value").value(hasItems("another header", "yet another header")))
-            .andExpect(jsonPath("$.services.headers.[*].column").value(hasItems(1, 4)))
-            .andExpect(jsonPath("$.services.valid").value("false"));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.headers.[*].violation").value(hasItem("com.altissia.constraints.header.invalid")))
+            .andExpect(jsonPath("$.validations.services.headers.[*].value").value(hasItems("another header", "yet another header")))
+            .andExpect(jsonPath("$.validations.services.headers.[*].column").value(hasItems(1, 4)))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"));
     }
 
     @Test
@@ -204,7 +219,9 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/model.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.valid").value("true"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.valid").value("true"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.valid").value("true"));
     }
 }

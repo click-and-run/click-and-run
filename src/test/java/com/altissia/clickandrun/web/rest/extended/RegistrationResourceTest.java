@@ -66,8 +66,7 @@ public class RegistrationResourceTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.valid").value("true"));
+            .andExpect(jsonPath("$.valid").value("true"));
     }
 
     @Test
@@ -78,12 +77,13 @@ public class RegistrationResourceTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("false"))
-            .andExpect(jsonPath("$.services.valid").value("true"))
-            .andExpect(jsonPath("$.registrants.errors").value(hasSize(2)))
-            .andExpect(jsonPath("$.registrants.errors.[*].violations.[0].field").value(everyItem(is("login"))))
-            .andExpect(jsonPath("$.registrants.errors.[*].violations.[0].violation").value(everyItem(is("com.altissia.constraints.login.duplicate"))))
-            .andExpect(jsonPath("$.registrants.errors.[*].violations.[0].value").value(everyItem(is("rlaloux@altissia.org"))));
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("false"))
+            .andExpect(jsonPath("$.validations.services.valid").value("true"))
+            .andExpect(jsonPath("$.validations.registrants.errors").value(hasSize(2)))
+            .andExpect(jsonPath("$.validations.registrants.errors.[*].violations.[0].field").value(everyItem(is("login"))))
+            .andExpect(jsonPath("$.validations.registrants.errors.[*].violations.[0].violation").value(everyItem(is("com.altissia.constraints.login.duplicate"))))
+            .andExpect(jsonPath("$.validations.registrants.errors.[*].violations.[0].value").value(everyItem(is("rlaloux@altissia.org"))));
     }
 
     @Test
@@ -103,12 +103,13 @@ public class RegistrationResourceTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("false"))
-            .andExpect(jsonPath("$.services.valid").value("true"))
-            .andExpect(jsonPath("$.registrants.errors").value(hasSize(1)))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].field").value(is("login")))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.login.unavailable")))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].value").value(is("ahorgnies@altissia.org")));
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("false"))
+            .andExpect(jsonPath("$.validations.services.valid").value("true"))
+            .andExpect(jsonPath("$.validations.registrants.errors").value(hasSize(1)))
+            .andExpect(jsonPath("$.validations.registrants.errors.[0].violations.[0].field").value(is("login")))
+            .andExpect(jsonPath("$.validations.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.login.unavailable")))
+            .andExpect(jsonPath("$.validations.registrants.errors.[0].violations.[0].value").value(is("ahorgnies@altissia.org")));
     }
 
     @Test
@@ -119,12 +120,13 @@ public class RegistrationResourceTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("false"))
-            .andExpect(jsonPath("$.services.valid").value("true"))
-            .andExpect(jsonPath("$.registrants.errors").value(hasSize(1)))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].field").value(is("login")))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.registrant.unused")))
-            .andExpect(jsonPath("$.registrants.errors.[0].violations.[0].value").value(is("adrien.pierre.horgnies@gmail.com")));
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("false"))
+            .andExpect(jsonPath("$.validations.services.valid").value("true"))
+            .andExpect(jsonPath("$.validations.registrants.errors").value(hasSize(1)))
+            .andExpect(jsonPath("$.validations.registrants.errors.[0].violations.[0].field").value(is("login")))
+            .andExpect(jsonPath("$.validations.registrants.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.registrant.unused")))
+            .andExpect(jsonPath("$.validations.registrants.errors.[0].violations.[0].value").value(is("adrien.pierre.horgnies@gmail.com")));
     }
 
     @Test
@@ -135,12 +137,13 @@ public class RegistrationResourceTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.valid").value("false"))
-            .andExpect(jsonPath("$.services.errors").value(hasSize(2)))
-            .andExpect(jsonPath("$.services.errors.[*].violations.[0].field").value(everyItem(is("login"))))
-            .andExpect(jsonPath("$.services.errors.[*].violations.[0].violation").value(everyItem(is("com.altissia.constraints.service.duplicate"))))
-            .andExpect(jsonPath("$.services.errors.[*].violations.[0].value").value(everyItem(is("adrien.pierre.horgnies@gmail.com"))));
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"))
+            .andExpect(jsonPath("$.validations.services.errors").value(hasSize(2)))
+            .andExpect(jsonPath("$.validations.services.errors.[*].violations.[0].field").value(everyItem(is("login"))))
+            .andExpect(jsonPath("$.validations.services.errors.[*].violations.[0].violation").value(everyItem(is("com.altissia.constraints.service.duplicate"))))
+            .andExpect(jsonPath("$.validations.services.errors.[*].violations.[0].value").value(everyItem(is("adrien.pierre.horgnies@gmail.com"))));
     }
 
     @Test
@@ -151,11 +154,12 @@ public class RegistrationResourceTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.valid").value("false"))
-            .andExpect(jsonPath("$.services.errors").value(hasSize(1)))
-            .andExpect(jsonPath("$.services.errors.[0].violations.[0].field").value(is("login")))
-            .andExpect(jsonPath("$.services.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.registrant.undefined")))
-            .andExpect(jsonPath("$.services.errors.[0].violations.[0].value").value(is("adrien.pierre.horgnies@gmail.com")));
+            .andExpect(jsonPath("$.valid").value("false"))
+            .andExpect(jsonPath("$.validations.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.validations.services.valid").value("false"))
+            .andExpect(jsonPath("$.validations.services.errors").value(hasSize(1)))
+            .andExpect(jsonPath("$.validations.services.errors.[0].violations.[0].field").value(is("login")))
+            .andExpect(jsonPath("$.validations.services.errors.[0].violations.[0].violation").value(is("com.altissia.constraints.registrant.undefined")))
+            .andExpect(jsonPath("$.validations.services.errors.[0].violations.[0].value").value(is("adrien.pierre.horgnies@gmail.com")));
     }
 }
