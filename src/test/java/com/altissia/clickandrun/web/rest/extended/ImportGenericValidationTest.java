@@ -139,6 +139,19 @@ public class ImportGenericValidationTest {
     }
 
     @Test
+    public void testValidateHeadersMissing() throws Exception {
+        restMock.perform(MockMvcRequestBuilders
+            .fileUpload(VALIDATION_ENDPOINT)
+            .file(testFileProvider.getXLSX("/import/generic/error-header-missing.xlsx")))
+            .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.services.headers.[*].column").value(-1))
+            .andExpect(jsonPath("$.services.valid").value("false"));
+    }
+
+    @Test
     public void testValidateHeadersUnrecognized() throws Exception {
         restMock.perform(MockMvcRequestBuilders
             .fileUpload(VALIDATION_ENDPOINT)
