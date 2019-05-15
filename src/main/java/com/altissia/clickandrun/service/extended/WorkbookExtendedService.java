@@ -4,12 +4,13 @@ import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
+import com.altissia.clickandrun.domain.spreadsheet.validation.HeaderValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.validator.SheetValidator;
-import com.google.common.collect.Sets;
 import com.poiji.bind.Poiji;
 import com.poiji.exception.PoijiExcelType;
 import com.poiji.option.PoijiOptions;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -25,9 +26,9 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 @Service
@@ -122,24 +123,38 @@ public class WorkbookExtendedService {
             // Read all cell of the first row and check if they match an expected header
             XSSFSheet poiSheet = poiWorkbook.getSheet(sheet.getName());
             if (poiSheet == null) {
-                sheet.addHeaderError(new FieldValidation("header", "", "com.altissia.constraints.sheet.missing"));
+                sheet.addHeaderError(new HeaderValidation(-1, "header", "", "com.altissia.constraints.sheet.missing"));
                 return;
             }
 
-            XSSFRow header = poiSheet.getRow(0);
+            XSSFRow headerRow = poiSheet.getRow(0);
 
-            if (header == null || header.getPhysicalNumberOfCells() == 0) {
-                sheet.addHeaderError(new FieldValidation("header", "", "com.altissia.constraints.header.empty"));
+            if (headerRow == null || headerRow.getPhysicalNumberOfCells() == 0) {
+                sheet.addHeaderError(new HeaderValidation(-1, "header", "", "com.altissia.constraints.header.empty"));
             } else {
-                Set<String> headerStringCellValues = StreamSupport.stream(header.spliterator(), false).map(Cell::getStringCellValue).collect(Collectors.toSet());
 
-                if (!workbook.isIgnoringSuperfluousHeaders()) {
-                    Sets.SetView<String> invalids = Sets.difference(headerStringCellValues, Sets.newHashSet(expectedHeaders));
-                    invalids.forEach(h -> sheet.addHeaderError(new FieldValidation("header", h, "com.altissia.constraints.header.invalid")));
+                Map<String, Boolean> headersFound = expectedHeaders.stream().collect(Collectors.toMap(Function.identity(), x -> false));
+
+                for (Cell cell : headerRow) {
+                    String value = cell.getStringCellValue();
+                    int column = cell.getColumnIndex();
+
+                    if (!workbook.isIgnoringSuperfluousHeaders() && StringUtils.isBlank(value)) {
+                        sheet.addHeaderError(new HeaderValidation(column, "header", value, "com.altissia.constraints.header.blank"));
+                    } else if (!workbook.isIgnoringSuperfluousHeaders() && !expectedHeaders.contains(value)) {
+                        sheet.addHeaderError(new HeaderValidation(column, "header", value, "com.altissia.constraints.header.invalid"));
+                    } else if (headersFound.containsKey(value) && headersFound.get(value)) {
+                        sheet.addHeaderError(new HeaderValidation(column, "header", value, "com.altissia.constraints.header.duplicate"));
+                    } else {
+                        headersFound.put(value, true);
+                    }
                 }
 
-                Sets.SetView<String> omissions = Sets.difference(Sets.newHashSet(expectedHeaders), headerStringCellValues);
-                omissions.forEach(h -> sheet.addHeaderError(new FieldValidation("header", h, "com.altissia.constraints.header.missing")));
+                headersFound.forEach((header, found) -> {
+                    if (!found) {
+                        sheet.addHeaderError(new HeaderValidation(-1, "header", header, "com.altissia.constraints.header.missing"));
+                    }
+                });
             }
         });
 

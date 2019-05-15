@@ -1,7 +1,7 @@
 package com.altissia.clickandrun.domain.spreadsheet;
 
 
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
+import com.altissia.clickandrun.domain.spreadsheet.validation.HeaderValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.SheetValidation;
 import com.poiji.annotation.ExcelCellName;
@@ -90,7 +90,7 @@ public abstract class Sheet<T extends Row> {
      *
      * @param error the actual error
      */
-    public void addHeaderError(FieldValidation error) {
+    public void addHeaderError(HeaderValidation error) {
         this.validity.addHeaderError(error);
     }
 

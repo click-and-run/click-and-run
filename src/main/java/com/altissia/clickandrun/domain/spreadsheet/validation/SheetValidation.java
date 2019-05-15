@@ -10,7 +10,7 @@ import java.util.TreeSet;
  */
 public class SheetValidation {
 
-	private Set<FieldValidation> headers;
+	private Set<HeaderValidation> headers;
 
 	private Set<RowValidation> error;
 
@@ -22,11 +22,11 @@ public class SheetValidation {
 		this.warning = new TreeSet<>();
 	}
 
-	public Set<FieldValidation> getHeaders() {
+	public Set<HeaderValidation> getHeaders() {
 		return headers;
 	}
 
-	public void addHeaderError(FieldValidation violation) {
+	public void addHeaderError(HeaderValidation violation) {
 		this.headers.add(violation);
 	}
 
