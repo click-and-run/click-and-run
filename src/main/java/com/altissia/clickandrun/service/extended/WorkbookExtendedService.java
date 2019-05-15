@@ -123,18 +123,15 @@ public class WorkbookExtendedService {
             // Read all cell of the first row and check if they match an expected header
             XSSFSheet poiSheet = poiWorkbook.getSheet(sheet.getName());
             if (poiSheet == null) {
-                sheet.addHeaderError(new HeaderValidation(-1, "header", "", "com.altissia.constraints.sheet.missing"));
+                sheet.addHeaderError(new HeaderValidation(-1, "sheet", "", "com.altissia.constraints.sheet.missing"));
                 return;
             }
 
             XSSFRow headerRow = poiSheet.getRow(0);
 
-            if (headerRow == null || headerRow.getPhysicalNumberOfCells() == 0) {
-                sheet.addHeaderError(new HeaderValidation(-1, "header", "", "com.altissia.constraints.header.empty"));
-            } else {
+            Map<String, Boolean> headersFound = expectedHeaders.stream().collect(Collectors.toMap(Function.identity(), x -> false));
 
-                Map<String, Boolean> headersFound = expectedHeaders.stream().collect(Collectors.toMap(Function.identity(), x -> false));
-
+            if (headerRow != null && headerRow.getPhysicalNumberOfCells() > 0) {
                 for (Cell cell : headerRow) {
                     String value = cell.getStringCellValue();
                     int column = cell.getColumnIndex();
@@ -150,12 +147,13 @@ public class WorkbookExtendedService {
                     }
                 }
 
-                headersFound.forEach((header, found) -> {
-                    if (!found) {
-                        sheet.addHeaderError(new HeaderValidation(-1, "header", header, "com.altissia.constraints.header.missing"));
-                    }
-                });
             }
+
+            headersFound.forEach((header, found) -> {
+                if (!found) {
+                    sheet.addHeaderError(new HeaderValidation(-1, "header", header, "com.altissia.constraints.header.missing"));
+                }
+            });
         });
 
         try {

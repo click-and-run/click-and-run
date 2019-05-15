@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -93,7 +92,9 @@ public class ImportGenericValidationTest {
             .file(testFileProvider.getXLSX("/import/generic/error-start-not-zero.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.registrants.headers.[*].violation").value("com.altissia.constraints.header.empty"))
+            .andExpect(jsonPath("$.registrants.headers.[*].violation").value(hasSize(4)))
+            .andExpect(jsonPath("$.registrants.headers.[*].violation").value(everyItem(is("com.altissia.constraints.header.missing"))))
+            .andExpect(jsonPath("$.registrants.headers.[*].column").value(everyItem(is(-1))))
             .andExpect(jsonPath("$.registrants.valid").value("false"));
     }
 
