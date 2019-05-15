@@ -17,6 +17,10 @@ public class HeaderValidation extends FieldValidation {
         this.column = column;
     }
 
+    public int getColumn() {
+        return column;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
