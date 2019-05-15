@@ -65,6 +65,7 @@ public abstract class Workbook {
         return this.sheets.values().stream().anyMatch(Sheet::hasWarning);
 	}
 
+	@JsonIgnore
     public boolean isIgnoringSuperfluousHeaders() {
         return ignoringSuperfluousHeaders;
     }
