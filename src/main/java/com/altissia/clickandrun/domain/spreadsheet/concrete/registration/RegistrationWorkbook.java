@@ -3,12 +3,12 @@ package com.altissia.clickandrun.domain.spreadsheet.concrete.registration;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 
-public class RegistrationWB extends Workbook {
+public class RegistrationWorkbook extends Workbook {
 
     public static final String SHEET_REGISTRANTS = "registrants";
     public static final String SHEET_SERVICES = "services";
 
-    public RegistrationWB() {
+    public RegistrationWorkbook() {
         this.sheets.put(SHEET_REGISTRANTS, new RegistrantsSheet());
         this.sheets.put(SHEET_SERVICES, new ServicesSheet());
     }

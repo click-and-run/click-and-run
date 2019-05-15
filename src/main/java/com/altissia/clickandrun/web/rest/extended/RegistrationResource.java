@@ -2,7 +2,7 @@ package com.altissia.clickandrun.web.rest.extended;
 
 
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
-import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWB;
+import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.validation.SheetValidation;
 import com.altissia.clickandrun.service.extended.WorkbookExtendedService;
 import com.codahale.metrics.annotation.Timed;
@@ -39,7 +39,7 @@ public class RegistrationResource {
 
         // todo ExceptionTranslator rather than try catch https://github.com/click-and-run/click-and-run/issues/6
         try {
-            workbook = workbookExtendedService.validateWorkbook(file, new RegistrationWB());
+            workbook = workbookExtendedService.validateWorkbook(file, new RegistrationWorkbook());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().header("click-and-run-error", e.getMessage()).build();
         }

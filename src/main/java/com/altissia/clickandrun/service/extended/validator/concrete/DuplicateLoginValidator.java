@@ -3,7 +3,7 @@ package com.altissia.clickandrun.service.extended.validator.concrete;
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrantRow;
-import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWB;
+import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.service.extended.validator.common.DuplicateCellValidator;
 import com.altissia.clickandrun.service.extended.validator.common.Severity;
@@ -18,7 +18,7 @@ public class DuplicateLoginValidator extends DuplicateCellValidator<RegistrantRo
 
     @Override
     public boolean isApplicableTo(Sheet<? extends Row> sheet) {
-        return sheet instanceof RegistrationWB.RegistrantsSheet;
+        return sheet instanceof RegistrationWorkbook.RegistrantsSheet;
     }
 
     @Override
