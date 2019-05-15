@@ -1,6 +1,7 @@
 package com.altissia.clickandrun.domain.spreadsheet.validation;
 
 import javax.validation.ConstraintViolation;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -8,6 +9,8 @@ import java.util.Objects;
  * It is used for both header fields and default row fields.
  */
 public class FieldValidation implements Comparable<FieldValidation> {
+
+    private static Comparator<String> comparator = Comparator.nullsFirst(String::compareTo);
 
 	private String field;
 
@@ -72,12 +75,12 @@ public class FieldValidation implements Comparable<FieldValidation> {
 	 */
 	@Override
 	public int compareTo(FieldValidation other) {
-		int compare = this.getField().compareTo(other.getField());
+        int compare = comparator.compare(this.getField(), other.getField());
         if (compare == 0) {
-            compare = this.getViolation().compareTo(other.getViolation());
+            compare = comparator.compare(this.getViolation(), other.getViolation());
         }
         if (compare == 0) {
-            compare = this.getValue().compareTo(other.getValue());
+            compare = comparator.compare(this.getValue(), other.getValue());
         }
 		return compare;
 	}
