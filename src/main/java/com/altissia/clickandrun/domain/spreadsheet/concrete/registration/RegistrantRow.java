@@ -72,4 +72,15 @@ public class RegistrantRow extends Row {
     public int hashCode() {
         return Objects.hash(getFirstName(), getLastName(), getLogin());
     }
+
+    @Override
+    public String toString() {
+        return "RegistrantRow{" +
+            "row=" + row +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", login='" + login + '\'' +
+            ", interfaceLanguage='" + interfaceLanguage + '\'' +
+            '}';
+    }
 }
