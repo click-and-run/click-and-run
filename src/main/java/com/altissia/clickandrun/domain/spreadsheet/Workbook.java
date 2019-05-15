@@ -25,8 +25,9 @@ public abstract class Workbook {
 	 * @param sheetName the name of the sheet
 	 * @return the model related to the sheet
 	 */
-	public List<? extends Row> getSheetRows(String sheetName) {
-        return this.sheets.get(sheetName).getRows();
+	@SuppressWarnings("unchecked")
+	public <T extends Row> List<T> getSheetRows(String sheetName) {
+        return (List<T>) this.sheets.get(sheetName).getRows();
 	}
 
 	public Collection<Sheet<? extends Row>> getSheets() {

@@ -58,6 +58,7 @@ public abstract class Sheet<T extends Row> {
         return rows;
     }
 
+    @SuppressWarnings("unchecked")
     public void setRows(List<? extends Row> rows) {
         this.rows = (List<T>) rows;
     }
