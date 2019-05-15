@@ -102,7 +102,7 @@ public class WorkbookExtendedService {
                 sheet.setRows(rows);
             } catch (IOException e) {
                 log.error("Unable to read file", e);
-                throw new IllegalArgumentException("altiman.error.validation.file.unreadable");
+                throw new IllegalArgumentException("clickandrun.error.validation.file.unreadable");
             }
         });
 
