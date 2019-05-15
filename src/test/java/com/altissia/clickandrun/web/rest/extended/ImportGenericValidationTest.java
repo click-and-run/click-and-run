@@ -112,18 +112,16 @@ public class ImportGenericValidationTest {
             .andExpect(jsonPath("$.services.valid").value("true"));
     }
 
-    /**
-     * whole column is missing technically
-     */
     @Test
-    public void testValidateHeadersMissing() throws Exception {
+    public void testValidateHeadersColumnMissing() throws Exception {
         restMock.perform(MockMvcRequestBuilders
             .fileUpload(VALIDATION_ENDPOINT)
-            .file(testFileProvider.getXLSX("/import/generic/error-header-missing.xlsx")))
+            .file(testFileProvider.getXLSX("/import/generic/error-column-missing.xlsx")))
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.registrants.valid").value("true"))
             .andExpect(jsonPath("$.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.services.headers.[*].column").value(-1))
             .andExpect(jsonPath("$.services.valid").value("false"));
     }
 
@@ -135,7 +133,8 @@ public class ImportGenericValidationTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value("com.altissia.constraints.header.missing"))
+            .andExpect(jsonPath("$.services.headers.[*].violation").value(hasItems("com.altissia.constraints.header.missing", "com.altissia.constraints.header.blank")))
+            .andExpect(jsonPath("$.services.headers.[*].column").value(hasItems(-1, 1)))
             .andExpect(jsonPath("$.services.valid").value("false"));
     }
 
@@ -148,6 +147,7 @@ public class ImportGenericValidationTest {
             .andExpect(jsonPath("$.registrants.valid").value("true"))
             .andExpect(jsonPath("$.services.headers.[*].violation").value(hasItem("com.altissia.constraints.header.invalid")))
             .andExpect(jsonPath("$.services.headers.[*].value").value(hasItems("another header", "yet another header")))
+            .andExpect(jsonPath("$.services.headers.[*].column").value(hasItems(1, 4)))
             .andExpect(jsonPath("$.services.valid").value("false"));
     }
 

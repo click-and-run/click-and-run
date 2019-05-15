@@ -136,7 +136,8 @@ public class WorkbookExtendedService {
                     String value = cell.getStringCellValue();
                     int column = cell.getColumnIndex();
 
-                    if (!workbook.isIgnoringSuperfluousHeaders() && StringUtils.isBlank(value)) {
+                    // '\u00A0' is non-breaking space, useful because Excel replace multiple space with alternating space and non-breaking space
+                    if (!workbook.isIgnoringSuperfluousHeaders() && StringUtils.isBlank(value.replace('\u00A0', ' '))) {
                         sheet.addHeaderError(new HeaderValidation(column, "header", value, "com.altissia.constraints.header.blank"));
                     } else if (!workbook.isIgnoringSuperfluousHeaders() && !expectedHeaders.contains(value)) {
                         sheet.addHeaderError(new HeaderValidation(column, "header", value, "com.altissia.constraints.header.invalid"));
