@@ -4,7 +4,7 @@ import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.ServiceRow;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
+import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.validator.common.DuplicateRowValidator;
 import com.altissia.clickandrun.service.extended.validator.common.Severity;
 import org.springframework.stereotype.Component;
@@ -17,12 +17,12 @@ public class DuplicateServiceValidator extends DuplicateRowValidator<ServiceRow>
     }
 
     @Override
-    public FieldValidation getFieldValidation(ServiceRow row) {
-        return new FieldValidation("login", row.getLogin(), "com.altissia.constraints.service.duplicate");
+    public boolean isApplicableTo(Sheet<? extends Row> sheet) {
+        return sheet instanceof RegistrationWorkbook.ServicesSheet;
     }
 
     @Override
-    public boolean isApplicableTo(Sheet<? extends Row> sheet) {
-        return sheet instanceof RegistrationWorkbook.ServicesSheet;
+    public RowValidation getRowValidation(ServiceRow row) {
+        return new RowValidation(row.getRow(), "login", row.getLogin(), "com.altissia.constraints.service.duplicate");
     }
 }

@@ -3,7 +3,6 @@ package com.altissia.clickandrun.service.extended.validator.registration;
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.ServiceRow;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.validator.WorkbookValidator;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class UnusedRegistrantValidator extends WorkbookValidator {
             .filter(registrantRow -> !usedLogins.contains(registrantRow.getLogin()))
             .forEach(registrantRow -> {
                 unused.getAndIncrement();
-                registrantsSheet.addRowError(new RowValidation(registrantRow.getRow(), new FieldValidation("login", registrantRow.getLogin(), "com.altissia.constraints.registrant.unused")));
+                registrantsSheet.addRowError(new RowValidation(registrantRow.getRow(), "login", registrantRow.getLogin(), "com.altissia.constraints.registrant.unused"));
             });
 
         return unused.get();

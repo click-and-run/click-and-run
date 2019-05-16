@@ -4,7 +4,6 @@ import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrantRow;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.repository.LearnerRepository;
 import com.altissia.clickandrun.service.extended.validator.SheetValidator;
@@ -35,7 +34,7 @@ public class LoginUnavailableValidator extends SheetValidator<RegistrantRow> {
         AtomicLong used = new AtomicLong(0);
         learnerRepository.findAllByLoginIn(rowsByLogin.keySet()).forEach(learner -> rowsByLogin.get(learner.getLogin()).forEach(rowWithUsedLogin -> {
             used.getAndIncrement();
-            sheet.addRowError(new RowValidation(rowWithUsedLogin.getRow(), new FieldValidation("login", rowWithUsedLogin.getLogin(), "com.altissia.constraints.login.unavailable")));
+            sheet.addRowError(new RowValidation(rowWithUsedLogin.getRow(), "login", rowWithUsedLogin.getLogin(), "com.altissia.constraints.login.unavailable"));
         }));
 
         return used.get();

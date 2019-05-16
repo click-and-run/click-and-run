@@ -4,7 +4,7 @@ import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrantRow;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
+import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.validator.common.DuplicateCellValidator;
 import com.altissia.clickandrun.service.extended.validator.common.Severity;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class DuplicateLoginValidator extends DuplicateCellValidator<RegistrantRo
     }
 
     @Override
-    public FieldValidation getFieldValidation(RegistrantRow row) {
-        return new FieldValidation("login", row.getLogin(), "com.altissia.constraints.login.duplicate");
+    public RowValidation getRowValidation(RegistrantRow row) {
+        return new RowValidation(row.getRow(), "login", row.getLogin(), "com.altissia.constraints.login.duplicate");
     }
 }
