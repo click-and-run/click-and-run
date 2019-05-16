@@ -35,6 +35,7 @@ public abstract class Workbook {
 	@JsonIgnore
 	public <T extends Row> List<T> getSheetRows(String sheetName) {
         return (List<T>) this.sheets.get(sheetName).getRows();
+    }
 
 	@JsonIgnore
 	public Collection<Sheet<? extends Row>> getSheets() {
