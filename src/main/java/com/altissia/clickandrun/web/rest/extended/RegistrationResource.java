@@ -58,7 +58,7 @@ public class RegistrationResource {
 
         // todo ExceptionTranslator rather than try catch https://github.com/click-and-run/click-and-run/issues/6
         try {
-            processorResult = this.workbookExtendedService.processWorkbook(file, new RegistrationWB());
+            processorResult = this.workbookExtendedService.processWorkbook(file, new RegistrationWorkbook());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().header("click-and-run-error", e.getMessage()).build();
         }

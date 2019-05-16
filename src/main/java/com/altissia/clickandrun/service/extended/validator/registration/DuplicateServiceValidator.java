@@ -2,7 +2,7 @@ package com.altissia.clickandrun.service.extended.validator.registration;
 
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
-import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWB;
+import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.ServiceRow;
 import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.service.extended.validator.common.DuplicateRowValidator;
@@ -23,6 +23,6 @@ public class DuplicateServiceValidator extends DuplicateRowValidator<ServiceRow>
 
     @Override
     public boolean isApplicableTo(Sheet<? extends Row> sheet) {
-        return sheet instanceof RegistrationWB.ServicesSheet;
+        return sheet instanceof RegistrationWorkbook.ServicesSheet;
     }
 }

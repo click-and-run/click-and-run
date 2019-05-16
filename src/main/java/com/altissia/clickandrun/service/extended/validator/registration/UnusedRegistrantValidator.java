@@ -1,7 +1,7 @@
 package com.altissia.clickandrun.service.extended.validator.registration;
 
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
-import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWB;
+import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.ServiceRow;
 import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
@@ -17,17 +17,16 @@ import java.util.stream.Collectors;
 public class UnusedRegistrantValidator extends WorkbookValidator {
     @Override
     public boolean isApplicableTo(Workbook definition) {
-        return definition instanceof RegistrationWB;
+        return definition instanceof RegistrationWorkbook;
     }
 
     @Override
     public long validate(Workbook workbook) {
-        //noinspection unchecked
-        List<ServiceRow> serviceRows = (List<ServiceRow>) workbook.getSheetRows(RegistrationWB.SHEET_SERVICES);
+        List<ServiceRow> serviceRows = workbook.getSheetRows(RegistrationWorkbook.SHEET_SERVICES);
 
         Set<String> usedLogins = serviceRows.stream().map(ServiceRow::getLogin).collect(Collectors.toSet());
 
-        RegistrationWB.RegistrantsSheet registrantsSheet = (RegistrationWB.RegistrantsSheet) workbook.getSheet(RegistrationWB.SHEET_REGISTRANTS);
+        RegistrationWorkbook.RegistrantsSheet registrantsSheet = (RegistrationWorkbook.RegistrantsSheet) workbook.getSheet(RegistrationWorkbook.SHEET_REGISTRANTS);
 
         AtomicLong unused = new AtomicLong(0);
         registrantsSheet.getRows().stream()
