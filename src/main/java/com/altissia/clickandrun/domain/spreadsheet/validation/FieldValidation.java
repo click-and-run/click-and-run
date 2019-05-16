@@ -8,7 +8,7 @@ import java.util.Objects;
  * Field validation, describe a constraint violation for a specific field.
  * It is used for both header fields and default row fields.
  */
-public class FieldValidation implements Comparable<FieldValidation> {
+public class FieldValidation {
 
     private static Comparator<String> comparator = Comparator.nullsFirst(String::compareTo);
 
@@ -73,7 +73,6 @@ public class FieldValidation implements Comparable<FieldValidation> {
 	 * @param other other bean to compare to
 	 * @return -1, 0 or 1
 	 */
-	@Override
 	public int compareTo(FieldValidation other) {
         int compare = comparator.compare(this.getField(), other.getField());
         if (compare == 0) {
