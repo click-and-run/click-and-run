@@ -48,8 +48,7 @@ public class RegistrationResource {
 
     @Timed
     @PostMapping(value = "/process", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ProcessorResult> createFromFile(
-        @RequestParam(name = "file") MultipartFile file) {
+    public ResponseEntity<ProcessorResult> createFromFile(@RequestParam(name = "file") MultipartFile file) {
         log.debug("REST request to /registration/process with {}", file.getOriginalFilename());
 
         ProcessorResult processorResult;
