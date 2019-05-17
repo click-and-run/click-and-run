@@ -3,7 +3,7 @@ package com.altissia.clickandrun.domain.spreadsheet.validation;
 import javax.validation.ConstraintViolation;
 import java.util.Objects;
 
-public class HeaderValidation extends FieldValidation {
+public class HeaderValidation extends FieldValidation implements Comparable<HeaderValidation> {
 
     private int column;
 
@@ -46,12 +46,8 @@ public class HeaderValidation extends FieldValidation {
     }
 
     @Override
-    public int compareTo(FieldValidation other) {
-        int compare = 0;
-        if (other instanceof HeaderValidation) {
-            HeaderValidation otherHeader = (HeaderValidation) other;
-            compare = Integer.compare(this.column, otherHeader.column);
-        }
+    public int compareTo(HeaderValidation other) {
+        int compare = Integer.compare(this.getColumn(), other.getColumn());
         if (compare == 0) {
             compare = super.compareTo(other);
         }
