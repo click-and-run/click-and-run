@@ -3,7 +3,6 @@ package com.altissia.clickandrun.config;
 import com.altissia.clickandrun.security.AuthoritiesConstants;
 import com.altissia.clickandrun.security.jwt.JWTConfigurer;
 import com.altissia.clickandrun.security.jwt.TokenProvider;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -52,7 +51,7 @@ public class MicroserviceSecurityConfiguration extends WebSecurityConfigurerAdap
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()
-            .antMatchers("/api/**").permitAll() // todo enforce security https://github.com/click-and-run/click-and-run/issues/2
+            .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/swagger-resources/configuration/ui").permitAll()
