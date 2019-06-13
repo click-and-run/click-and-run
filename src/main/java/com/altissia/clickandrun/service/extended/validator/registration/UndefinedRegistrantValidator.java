@@ -3,7 +3,6 @@ package com.altissia.clickandrun.service.extended.validator.registration;
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrantRow;
 import com.altissia.clickandrun.domain.spreadsheet.concrete.registration.RegistrationWorkbook;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.validator.WorkbookValidator;
 import org.springframework.stereotype.Component;
@@ -35,7 +34,7 @@ public class UndefinedRegistrantValidator extends WorkbookValidator {
             .filter(serviceRow -> !definedLogins.contains(serviceRow.getLogin()))
             .forEach(serviceRow -> {
                 undefined.getAndIncrement();
-                servicesSheet.addRowError(new RowValidation(serviceRow.getRow(), new FieldValidation("login", serviceRow.getLogin(), "com.altissia.constraints.registrant.undefined")));
+                servicesSheet.addRowError(new RowValidation(serviceRow.getRow(), "login", serviceRow.getLogin(), "com.altissia.constraints.registrant.undefined"));
             });
 
         return undefined.get();

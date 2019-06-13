@@ -3,7 +3,6 @@ package com.altissia.clickandrun.service.extended;
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
 import com.altissia.clickandrun.domain.spreadsheet.Workbook;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.HeaderValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.processor.Processor;
@@ -25,12 +24,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -225,17 +226,14 @@ public class WorkbookExtendedService {
 
         long beanValidationErrors = sheet.getRows().stream()
             .mapToLong(row -> {
-                List<FieldValidation> rowViolations = beanValidator.validate(row)
-                    .stream()
-                    .map(FieldValidation::new)
-                    .collect(Collectors.toList());
+                Set<ConstraintViolation<T>> violations = beanValidator.validate(row);
 
-                if (!rowViolations.isEmpty()) {
-                    log.debug("{} error found during row {} validation", rowViolations.size(), row.getRow());
-                    sheet.addRowError(new RowValidation(row.getRow(), rowViolations));
+                if (!violations.isEmpty()) {
+                    log.debug("{} error found during row {} validation", violations.size(), row.getRow());
+                    violations.forEach(violation -> sheet.addRowError(new RowValidation(violation, row.getRow())));
                 }
 
-                return rowViolations.size();
+                return violations.size();
             })
             .sum();
 

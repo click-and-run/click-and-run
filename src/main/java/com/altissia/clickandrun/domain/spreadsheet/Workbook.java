@@ -2,6 +2,7 @@ package com.altissia.clickandrun.domain.spreadsheet;
 
 
 import com.altissia.clickandrun.domain.spreadsheet.validation.SheetValidation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public abstract class Workbook {
         this.sheets = new TreeMap<>();
 	}
 
+	@JsonIgnore
     public Sheet<? extends Row> getSheet(String sheetName) {
         return this.sheets.get(sheetName);
     }
@@ -30,10 +32,12 @@ public abstract class Workbook {
 	 * @return the model related to the sheet
 	 */
 	@SuppressWarnings("unchecked")
+	@JsonIgnore
 	public <T extends Row> List<T> getSheetRows(String sheetName) {
         return (List<T>) this.sheets.get(sheetName).getRows();
-	}
+    }
 
+	@JsonIgnore
 	public Collection<Sheet<? extends Row>> getSheets() {
         return sheets.values();
     }
@@ -62,6 +66,7 @@ public abstract class Workbook {
         return this.sheets.values().stream().anyMatch(Sheet::hasWarning);
 	}
 
+	@JsonIgnore
     public boolean isIgnoringSuperfluousHeaders() {
         return ignoringSuperfluousHeaders;
     }

@@ -2,7 +2,6 @@ package com.altissia.clickandrun.service.extended.validator.common;
 
 import com.altissia.clickandrun.domain.spreadsheet.Row;
 import com.altissia.clickandrun.domain.spreadsheet.Sheet;
-import com.altissia.clickandrun.domain.spreadsheet.validation.FieldValidation;
 import com.altissia.clickandrun.domain.spreadsheet.validation.RowValidation;
 import com.altissia.clickandrun.service.extended.validator.SheetValidator;
 import org.springframework.stereotype.Component;
@@ -37,13 +36,9 @@ public abstract class DuplicateCellValidator<T extends Row> extends SheetValidat
             .forEach(row -> {
                 existing.getAndIncrement();
                 if (this.severity.equals(Severity.ERROR)) {
-                    sheet.addRowError(new RowValidation(
-                        row.getRow(), this.getFieldValidation(row)
-                    ));
+                    sheet.addRowError(getRowValidation(row));
                 } else {
-                    sheet.addRowWarning(new RowValidation(
-                        row.getRow(), this.getFieldValidation(row)
-                    ));
+                    sheet.addRowWarning(getRowValidation(row));
                 }
             });
         return existing.get();
@@ -51,5 +46,5 @@ public abstract class DuplicateCellValidator<T extends Row> extends SheetValidat
 
     public abstract String getCellValue(T row);
 
-    public abstract FieldValidation getFieldValidation(T row);
+    public abstract RowValidation getRowValidation(T row);
 }
