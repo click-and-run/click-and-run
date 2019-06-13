@@ -120,12 +120,16 @@ public abstract class Sheet<T extends Row> {
         return validity.isValid();
     }
 
+    public boolean isHeaderValid() {
+        return validity.isHeaderValid();
+    }
+
     public boolean hasError() {
-        return !this.validity.getError().isEmpty();
+        return !this.validity.getErrors().isEmpty();
     }
 
     public boolean hasWarning() {
-        return !this.validity.getWarning().isEmpty();
+        return !this.validity.getWarnings().isEmpty();
     }
 
     @Override

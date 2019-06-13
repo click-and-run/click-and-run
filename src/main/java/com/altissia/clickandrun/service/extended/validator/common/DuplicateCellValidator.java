@@ -35,7 +35,7 @@ public abstract class DuplicateCellValidator<T extends Row> extends SheetValidat
         sheet.getRows().stream()
             .filter(row -> Collections.frequency(cellsValue, getCellValue(row)) > 1)
             .forEach(row -> {
-
+                existing.getAndIncrement();
                 if (this.severity.equals(Severity.ERROR)) {
                     sheet.addRowError(new RowValidation(
                         row.getRow(), this.getFieldValidation(row)

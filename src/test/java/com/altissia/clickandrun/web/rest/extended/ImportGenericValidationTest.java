@@ -34,7 +34,7 @@ public class ImportGenericValidationTest {
 
     private static final Logger log = LoggerFactory.getLogger(ImportGenericValidationTest.class);
 
-    private static final String VALIDATION_ENDPOINT = "/registration/validate";
+    private static final String VALIDATION_ENDPOINT = "/api/registration/validate";
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -133,7 +133,8 @@ public class ImportGenericValidationTest {
             .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.registrants.valid").value("true"))
-            .andExpect(jsonPath("$.services.headers.[*].violation").value(hasItems("com.altissia.constraints.header.missing", "com.altissia.constraints.header.blank")))
+            .andExpect(jsonPath("$.services.headers.[*].violation").value(hasSize(2)))
+            .andExpect(jsonPath("$.services.headers.[*].violation").value(containsInAnyOrder("com.altissia.constraints.header.missing", "com.altissia.constraints.header.blank")))
             .andExpect(jsonPath("$.services.headers.[*].column").value(hasItems(-1, 1)))
             .andExpect(jsonPath("$.services.valid").value("false"));
     }

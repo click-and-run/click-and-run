@@ -20,6 +20,10 @@ public abstract class Workbook {
         this.sheets = new TreeMap<>();
 	}
 
+    public Sheet<? extends Row> getSheet(String sheetName) {
+        return this.sheets.get(sheetName);
+    }
+
 	/**
 	 * Get the rows of a given sheet
 	 * @param sheetName the name of the sheet

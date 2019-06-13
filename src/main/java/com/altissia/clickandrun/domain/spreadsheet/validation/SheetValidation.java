@@ -30,7 +30,7 @@ public class SheetValidation {
 		this.headers.add(violation);
 	}
 
-	public Set<RowValidation> getError() {
+	public Set<RowValidation> getErrors() {
 		return error;
 	}
 
@@ -38,7 +38,7 @@ public class SheetValidation {
 		this.error.add(error);
 	}
 
-	public Set<RowValidation> getWarning() {
+	public Set<RowValidation> getWarnings() {
 		return warning;
 	}
 
@@ -53,6 +53,10 @@ public class SheetValidation {
 	public boolean isValid() {
 		return headers.isEmpty() && error.isEmpty();
 	}
+
+    public boolean isHeaderValid() {
+        return headers.isEmpty();
+    }
 
 	@Override
 	public boolean equals(Object o) {

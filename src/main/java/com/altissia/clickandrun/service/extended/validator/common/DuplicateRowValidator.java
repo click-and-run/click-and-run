@@ -45,5 +45,5 @@ public abstract class DuplicateRowValidator<T extends Row> extends SheetValidato
         return existing.get();
     }
 
-    public abstract FieldValidation getFieldValidation(Row row);
+    public abstract FieldValidation getFieldValidation(T row);
 }

@@ -9,5 +9,6 @@
     <include file="config/liquibase/changelog/20190428183103_added_entity_License.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190428183103_added_entity_constraints_License.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190509093135_alter_Learner_login_unique.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
