@@ -1,0 +1,58 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "licenses",
+            "otherEntityName": "license",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "learner"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "firstName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "pattern"
+            ],
+            "fieldValidateRulesMaxlength": "50",
+            "fieldValidateRulesPattern": "\\p{Lu}\\p{Ll}+"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength",
+                "pattern"
+            ],
+            "fieldValidateRulesMinlength": "2",
+            "fieldValidateRulesMaxlength": "100",
+            "fieldValidateRulesPattern": "\\p{Lu}\\p{Ll}+"
+        },
+        {
+            "fieldName": "login",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "interfaceLanguage",
+            "fieldType": "Language",
+            "fieldValues": "FR_FR,NL_BE,DE_DE,ES_ES,IT_IT,EN_GB",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20190428154907",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "learner",
+    "pagination": "pagination",
+    "microserviceName": "clickAndRun",
+    "searchEngine": false
+}

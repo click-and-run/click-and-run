@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity License.
+    -->
+    <changeSet id="20190428183103-1" author="jhipster">
+        <createTable tableName="license">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="service" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="study_language" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="valid_since" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="valid_until" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="consumed" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="learner_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="license" columnName="valid_since" columnDataType="datetime"/>
+        <dropDefaultValue tableName="license" columnName="valid_until" columnDataType="datetime"/>
+        
+    </changeSet>
+</databaseChangeLog>

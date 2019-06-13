@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "learner",
+            "otherEntityName": "learner",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "login"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "service",
+            "fieldType": "Service",
+            "fieldValues": "COURSE,ASSESSMENT,NEWS,VISIO",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "studyLanguage",
+            "fieldType": "Language",
+            "fieldValues": "FR_FR,NL_BE,DE_DE,ES_ES,IT_IT,EN_GB",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "validSince",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "validUntil",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "consumed",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20190428183103",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "license",
+    "pagination": "pagination",
+    "microserviceName": "clickAndRun",
+    "searchEngine": false
+}
