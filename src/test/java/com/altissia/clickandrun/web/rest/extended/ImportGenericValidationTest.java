@@ -195,4 +195,15 @@ public class ImportGenericValidationTest {
 
         assertThat(firstResponse).isEqualTo(secondResponse);
     }
+
+    @Test
+    public void testValidatingValid() throws Exception {
+        restMock.perform(MockMvcRequestBuilders
+            .fileUpload(VALIDATION_ENDPOINT)
+            .file(testFileProvider.getXLSX("/import/generic/model.xlsx")))
+            .andDo(mvcResult -> log.debug("Response: {}, {}", mvcResult.getResponse().getStatus(), mvcResult.getResponse().getContentAsString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.registrants.valid").value("true"))
+            .andExpect(jsonPath("$.services.valid").value("true"));
+    }
 }

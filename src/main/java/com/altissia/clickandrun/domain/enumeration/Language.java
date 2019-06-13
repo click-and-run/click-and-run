@@ -11,11 +11,12 @@ import java.util.stream.Collectors;
  */
 public enum Language {
     FR_FR(Locale.FRANCE, Type.STUDY),
-    NL_BE(new Locale.Builder().setLanguage("nl").setRegion("BE").setLanguageTag("nl-BE").build(), Type.STUDY),
+    NL_NL(new Locale.Builder().setLanguage("nl").setRegion("NL").setLanguageTag("nl-NL").build(), Type.STUDY),
     DE_DE(Locale.GERMANY, Type.STUDY),
-    EN_GB(Locale.UK, Type.INTERFACE),
+    EN_GB(Locale.UK, Type.STUDY),
     ES_ES(new Locale.Builder().setLanguage("es").setRegion("ES").setLanguageTag("es-ES").build(), Type.INTERFACE),
-    IT_IT(Locale.ITALY,Type.INTERFACE);
+    IT_IT(Locale.ITALY,Type.INTERFACE),
+    PT_BR(new Locale.Builder().setLanguage("pt").setRegion("BR").setLanguageTag("pt-BR").build(), Type.INTERFACE);
 
     private Locale locale;
     private Type type;

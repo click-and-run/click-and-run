@@ -1,6 +1,7 @@
 package com.altissia.clickandrun.domain.spreadsheet.concrete.registration;
 
 import com.altissia.clickandrun.domain.spreadsheet.Row;
+import com.altissia.clickandrun.service.extended.validator.common.InterfaceLanguage;
 import com.poiji.annotation.ExcelCellName;
 import com.poiji.annotation.ExcelRow;
 import org.hibernate.validator.constraints.Email;
@@ -15,16 +16,15 @@ public class RegistrantRow extends Row {
     @ExcelRow
     private int row;
 
-    // todo fancy regex forbid special characters or sequential non letter https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("First Name")
     @Length(max = 50)
     @Pattern(regexp = "\\p{Lu}\\p{Ll}+")
     private String firstName;
 
-    // todo fancy regex forbid special characters or sequential non letter https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Last Name")
     @NotNull
     @Length(min = 2, max = 100)
+    @Pattern(regexp = "\\p{Lu}\\p{Ll}+")
     private String lastName;
 
     @ExcelCellName("Email")
@@ -32,9 +32,8 @@ public class RegistrantRow extends Row {
     @NotNull
     private String login;
 
-    // todo Test membership of LanguageEnum with type = interface https://github.com/click-and-run/click-and-run/issues/4
     @ExcelCellName("Interface Language")
-    @NotNull
+    @InterfaceLanguage
     private String interfaceLanguage;
 
     @Override
